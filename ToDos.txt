@@ -1,0 +1,16 @@
+Review Findings
+
+8. Party, project, method, and protocol metadata is reduced.
+Missing content includes addresses, phones, URLs and positions (veg-misc.xsd:67-82); project personnel, funding, study area, design, related projects and citations (veg-misc.xsd:106-136); and method subjects and protocol grouping (veg-misc.xsd:490, veg-misc.xsd:517). JSON does add ORCID and richer web citations.
+
+9. Community classifications lose curation detail.
+Community rank and common name are absent, as are stratum-specific determinations, fit, confidence, and assertion authority (veg-community.xsd:14-16, veg-community.xsd:32-79). JSON retains concept reference, determiner, date, and notes (vegx.schema.json:485).
+
+10. Controlled definitions are partly flattened.
+Stratum definitions and observed stratum properties now share one object; surface-type definitions are replaced with free-text values. Generic attributes can carry much of the actual data, but the distinction between vocabulary definition and observation is weakened.
+
+11. Note and identifier metadata is lost.
+XSD notes have author, date, and category; JSON notes are plain strings. XSD identifiers also carry system and document/global scope, while JSON IDs do not.
+
+12. JSON rejects datasets without observations.
+The XSD permits metadata-only or empty datasets; JSON requires at least one plotObservation through required plus minItems: 1.

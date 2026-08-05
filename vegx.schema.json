@@ -2,9 +2,9 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://iavs.org/vegx/schema/3.0/vegx.schema.json",
   "title": "VegX 3.0 – Vegetation Plot Exchange Standard",
-  "description": "JSON Schema for exchanging vegetation plot (relevé) data. A dataset file contains one or more plotObservation records. Each plotObservation is the complete record of a single plot surveyed at a specific time: plot identity and location, observer and method metadata, user-defined stratum definitions, taxon occurrences by stratum, site observations, community type assignments, and broader community-level observations. This schema replaces the VegX 2.x XSD format; it covers the same information model with document-centric design rather than normalised ID references.",
+  "description": "JSON Schema for exchanging vegetation plot (relevé) data. A dataset file may contain dataset-level metadata and zero or more plotObservation records. Each plotObservation is the complete record of a single plot surveyed at a specific time: plot identity and location, observer and method metadata, user-defined stratum definitions, taxon occurrences by stratum, site observations, community type assignments, and broader community-level observations. This schema replaces the VegX 2.x XSD format; it covers the same information model with document-centric design rather than normalised ID references.",
   "type": "object",
-  "required": ["vegxVersion", "plotObservations"],
+  "required": ["vegxVersion"],
   "additionalProperties": false,
 
   "properties": {
@@ -21,8 +21,7 @@
 
     "plotObservations": {
       "type": "array",
-      "minItems": 1,
-      "description": "One or more plot observation records. Each record is the complete survey of one plot at one point in time.",
+      "description": "Zero or more plot observation records. Each record is the complete survey of one plot at one point in time.",
       "items": { "$ref": "#/definitions/plotObservation" }
     },
 
@@ -55,8 +54,13 @@
         },
         "methods": {
           "type": "array",
-          "description": "Survey methods or protocols used in this dataset.",
+          "description": "Survey methods used independently rather than as part of a protocol. Methods that belong to a protocol are listed within that protocol instead.",
           "items": { "$ref": "#/definitions/method" }
+        },
+        "protocols": {
+          "type": "array",
+          "description": "Protocols grouping methods related by a common action.",
+          "items": { "$ref": "#/definitions/protocol" }
         },
         "coverScales": {
           "type": "array",
@@ -75,7 +79,7 @@
       "properties": {
 
         "plotObservationID": {
-          "type": "string",
+          "$ref": "#/definitions/identifier",
           "description": "Globally unique identifier for this observation event, e.g. a UUID or LSID. Recommended for data exchange with national databases or GBIF."
         },
 
@@ -115,7 +119,7 @@
         "previousPlotObservationIDs": {
           "type": "array",
           "description": "Stable plotObservationID values for earlier observations explicitly related to this observation. Usually unnecessary when the time series is clear from plotID and obsStartDate.",
-          "items": { "type": "string", "minLength": 1 },
+          "items": { "$ref": "#/definitions/identifier" },
           "uniqueItems": true
         },
 
@@ -135,14 +139,14 @@
 
         "strata": {
           "type": "array",
-          "description": "Ordered vegetation layers recognised in this survey. Order runs from tallest (stratumOrder=1) downward. The stratumID values defined here are referenced by taxonObservation and organismObservation records within this plotObservation.",
-          "items": { "$ref": "#/definitions/stratum" }
+          "description": "Observations of the vegetation layers recognised in this survey. Each entry keeps the layer definition separate from its measured properties. stratumID values are referenced by taxonObservation and organismObservation records within this plotObservation.",
+          "items": { "$ref": "#/definitions/stratumObservation" }
         },
 
-        "communityTypes": {
+        "communityDeterminations": {
           "type": "array",
-          "description": "One or more assignments of this plot observation to a named vegetation unit (syntaxon). Multiple entries allow competing or revisable classifications by different authors.",
-          "items": { "$ref": "#/definitions/communityType" }
+          "description": "Assignments of this plot observation, or one of its strata, to vegetation community concepts. Multiple entries allow competing or revised classifications.",
+          "items": { "$ref": "#/definitions/communityDetermination" }
         },
 
         "successionalStage": {
@@ -196,15 +200,12 @@
                 "type": "string",
                 "description": "Coverage quality, e.g. 'complete', 'incomplete', 'not surveyed'. Free text or from a controlled vocabulary."
               },
-              "notes": { "type": "string" }
+              "notes": { "$ref": "#/definitions/notes" }
             }
           }
         },
 
-        "notes": {
-          "type": "string",
-          "description": "Free-text notes about this plot observation."
-        },
+        "notes": { "$ref": "#/definitions/notes" },
 
         "extensions": { "$ref": "#/definitions/extensions" }
 
@@ -224,7 +225,7 @@
           "$ref": "#/definitions/categoricalObservedValue",
           "description": "Weather during the observation, e.g. clear, overcast, light rain, or strong wind."
         },
-        "notes": { "type": "string" },
+        "notes": { "$ref": "#/definitions/notes" },
         "extensions": { "$ref": "#/definitions/extensions" }
       }
     },
@@ -248,7 +249,7 @@
           "type": "string",
           "description": "Page, section, appendix, or other textual location in the publication."
         },
-        "notes": { "type": "string" }
+        "notes": { "$ref": "#/definitions/notes" }
       }
     },
 
@@ -264,7 +265,58 @@
           "minLength": 1,
           "description": "Kind of grouping, e.g. treatment, campaign, transect, vegetation table, or data batch."
         },
-        "notes": { "type": "string" }
+        "notes": { "$ref": "#/definitions/notes" }
+      }
+    },
+
+    "identifier": {
+      "type": "object",
+      "description": "An identifier together with the system that issued or interprets it and its uniqueness scope.",
+      "required": ["value"],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Identifier value, such as a local database key, UUID, DOI, or URI."
+        },
+        "system": {
+          "type": "string",
+          "description": "Identifier system, registry, or namespace, e.g. UUID, DOI, GBIF, or a database URI."
+        },
+        "scope": {
+          "type": "string",
+          "enum": ["document", "system"],
+          "default": "document",
+          "description": "document means unique only within this VegX document; system means unique within the stated identifier system."
+        }
+      }
+    },
+
+    "notes": {
+      "type": "array",
+      "description": "Comments or explanations, each with optional authorship and curation metadata.",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/note" }
+    },
+
+    "note": {
+      "type": "object",
+      "description": "A comment or explanation about the containing record.",
+      "required": ["text"],
+      "additionalProperties": false,
+      "properties": {
+        "text": { "type": "string", "minLength": 1 },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date the note was recorded, in ISO 8601 format (yyyy-mm-dd)."
+        },
+        "category": {
+          "type": "string",
+          "description": "Purpose or audience of the note, e.g. observation, dataManagement, databaseUser, or internal."
+        },
+        "author": { "$ref": "#/definitions/party" }
       }
     },
 
@@ -281,7 +333,7 @@
         },
 
         "plotID": {
-          "type": "string",
+          "$ref": "#/definitions/identifier",
           "description": "Globally unique identifier for this plot, e.g. a UUID or LSID. Should remain stable across resurveys — plotObservations share the same plotID as a time series and are sorted by obsStartDate."
         },
 
@@ -417,7 +469,7 @@
             "properties": {
               "relatedPlotName": {
                 "type": "string",
-                "description": "plotName (or plotID) of the related plot."
+                "description": "plotName of the related plot."
               },
               "relationship": {
                 "type": "string",
@@ -431,7 +483,7 @@
           }
         },
 
-        "notes": { "type": "string" },
+        "notes": { "$ref": "#/definitions/notes" },
 
         "extensions": { "$ref": "#/definitions/extensions" }
 
@@ -491,7 +543,7 @@
           "default": false,
           "description": "True when this record supplies the preferred top-level geometry or elevation."
         },
-        "notes": { "type": "string" },
+        "notes": { "$ref": "#/definitions/notes" },
         "extensions": { "$ref": "#/definitions/extensions" }
       },
       "anyOf": [
@@ -517,7 +569,7 @@
           "description": "Position in or around the plot, e.g. south-west corner or centre."
         },
         "installedDate": { "type": "string", "format": "date" },
-        "notes": { "type": "string" }
+        "notes": { "$ref": "#/definitions/notes" }
       }
     },
 
@@ -537,7 +589,7 @@
           "type": "array",
           "items": { "$ref": "#/definitions/party" }
         },
-        "notes": { "type": "string" },
+        "notes": { "$ref": "#/definitions/notes" },
         "extensions": { "$ref": "#/definitions/extensions" }
       },
       "anyOf": [
@@ -573,7 +625,7 @@
           "description": "Vocabulary or gazetteer from which the place was taken, e.g. ISO 3166 or GeoNames."
         },
         "placeID": {
-          "type": "string",
+          "$ref": "#/definitions/identifier",
           "description": "Identifier or URI for the place in the stated scheme."
         }
       }
@@ -590,7 +642,7 @@
           "description": "Position of the origin, e.g. centre, south-west corner, or permanent marker."
         },
         "label": { "type": "string" },
-        "notes": { "type": "string" }
+        "notes": { "$ref": "#/definitions/notes" }
       }
     },
 
@@ -604,44 +656,71 @@
         "y_m": { "type": "number" },
         "z_m": { "type": "number" },
         "accuracy_m": { "type": "number", "minimum": 0 },
-        "notes": { "type": "string" }
+        "notes": { "$ref": "#/definitions/notes" }
       }
     },
 
-    "stratum": {
+    "stratumDefinition": {
       "type": "object",
-      "description": "A vegetation layer used in this survey. Layers are user-defined and ordered, allowing any national or tradition-specific stratum scheme.",
-      "required": ["stratumID", "stratumName", "stratumOrder"],
+      "description": "Definition of a vegetation layer, independent of what was observed in that layer during a particular survey.",
+      "required": ["name", "order"],
       "additionalProperties": false,
       "properties": {
-        "stratumID": {
+        "name": {
           "type": "string",
-          "description": "Short code referenced by taxonOccurrence.stratumID within this plotObservation, e.g. 'T1', 'T2', 'S', 'H', 'M', 'B'."
+          "description": "Name of the layer, e.g. 'upper tree layer', 'shrub layer', 'herb layer', or 'bryophyte layer'."
         },
-        "stratumName": {
+        "description": {
           "type": "string",
-          "description": "Full descriptive name, e.g. 'upper tree layer', 'shrub layer', 'herb layer', 'bryophyte layer'."
+          "description": "Rule defining which vegetation belongs to this layer, e.g. 'Trees between 5 and 20 m height'."
         },
-        "stratumOrder": {
+        "order": {
           "type": "integer",
           "minimum": 1,
           "description": "Position in the ordered sequence of strata; 1 = tallest."
         },
+        "heightRange_m": {
+          "type": "object",
+          "description": "Definitional height limits in metres. These are vocabulary boundaries, not heights measured during the survey.",
+          "additionalProperties": false,
+          "properties": {
+            "minimum": { "type": "number", "minimum": 0 },
+            "maximum": { "type": "number", "minimum": 0 }
+          }
+        },
+        "method": {
+          "$ref": "#/definitions/method",
+          "description": "Method or published scheme used to define this layer."
+        }
+      }
+    },
+
+    "stratumObservation": {
+      "type": "object",
+      "description": "Properties observed for one defined vegetation layer during this plot survey.",
+      "required": ["stratumID", "definition"],
+      "additionalProperties": false,
+      "properties": {
+        "stratumID": {
+          "type": "string",
+          "description": "Short code referenced by other records in this plot observation, e.g. 'T1', 'S', 'H', or 'M'."
+        },
+        "definition": { "$ref": "#/definitions/stratumDefinition" },
         "heightMin_m": {
           "$ref": "#/definitions/nonNegativeObservedValue",
-          "description": "Lower height bound of this stratum in metres."
+          "description": "Lowest observed height of this layer in metres."
         },
         "heightMax_m": {
           "$ref": "#/definitions/nonNegativeObservedValue",
-          "description": "Upper height bound of this stratum in metres."
+          "description": "Highest observed height of this layer in metres."
         },
         "attributes": {
           "type": "array",
-          "description": "Observed attributes of this stratum during the survey, e.g. actual canopy height, stratum cover, leaf area index. Distinct from the definitional height bounds above.",
+          "description": "Other measured properties of this layer, e.g. cover, leaf area index, or stem count.",
           "items": { "$ref": "#/definitions/attribute" }
         },
         "attributeGroups": { "$ref": "#/definitions/attributeGroups" },
-        "notes": { "type": "string" },
+        "notes": { "$ref": "#/definitions/notes" },
 
         "extensions": { "$ref": "#/definitions/extensions" }
       }
@@ -662,7 +741,7 @@
         "nameType": { "$ref": "#/definitions/taxonNameType" },
 
         "taxonID": {
-          "type": "string",
+          "$ref": "#/definitions/identifier",
           "description": "URI or identifier for the taxon concept applied when this observation was recorded, e.g. a GBIF species key URL, WFO identifier, or Euro+Med URI. Record later identifications or nomenclatural revisions in taxonDeterminations."
         },
 
@@ -705,7 +784,7 @@
 
         "attributeGroups": { "$ref": "#/definitions/attributeGroups" },
 
-        "notes": { "type": "string" },
+        "notes": { "$ref": "#/definitions/notes" },
 
         "extensions": { "$ref": "#/definitions/extensions" }
 
@@ -720,8 +799,7 @@
       "properties": {
 
         "organismID": {
-          "type": "string",
-          "minLength": 1,
+          "$ref": "#/definitions/identifier",
           "description": "Stable identifier for this individual, repeated unchanged across resurveys. It must be unique within the dataset; use a globally unique URI or UUID when records will be exchanged independently. This is an identity value, not a reference to another object."
         },
 
@@ -750,7 +828,7 @@
         "nameType": { "$ref": "#/definitions/taxonNameType" },
 
         "taxonID": {
-          "type": "string",
+          "$ref": "#/definitions/identifier",
           "description": "URI or identifier for the taxon concept applied when this individual was recorded. Record later identifications or nomenclatural revisions in taxonDeterminations."
         },
 
@@ -825,7 +903,7 @@
               "enum": ["NE", "NW", "SE", "SW"],
               "description": "Quarter in which this individual was found, for Point-Centred Quarter Method (PCQM). The area around each sample point is divided into four 90° quadrants: NE, NW, SE, SW. Use with distanceFromOrigin_m for the distance to the nearest individual in that quarter."
             },
-            "notes": { "type": "string" },
+            "notes": { "$ref": "#/definitions/notes" },
             "attributes": {
               "type": "array",
               "description": "Further positional attributes or method qualifiers for this individual's location, e.g. positioning instrument, coordinate precision class.",
@@ -848,7 +926,7 @@
           "default": "present"
         },
 
-        "notes": { "type": "string" },
+        "notes": { "$ref": "#/definitions/notes" },
 
         "extensions": { "$ref": "#/definitions/extensions" }
 
@@ -862,8 +940,7 @@
       "additionalProperties": false,
       "properties": {
         "relatedOrganismID": {
-          "type": "string",
-          "minLength": 1,
+          "$ref": "#/definitions/identifier",
           "description": "organismID of the related individual. The related individual may occur in the same or another plot observation in this dataset."
         },
         "relationship": {
@@ -871,7 +948,7 @@
           "minLength": 1,
           "description": "Relationship from the perspective of the observed individual, e.g. 'fusedWith', 'epiphyteOn', 'hostOf', 'offspringOf', or 'pairedWith'."
         },
-        "notes": { "type": "string" }
+        "notes": { "$ref": "#/definitions/notes" }
       }
     },
 
@@ -902,7 +979,7 @@
           "description": "Voucher specimen identifiers or herbarium accession numbers supporting the identification.",
           "items": { "type": "string" }
         },
-        "notes": { "type": "string" }
+        "notes": { "$ref": "#/definitions/notes" }
       }
     },
 
@@ -918,7 +995,7 @@
         },
         "nameType": { "$ref": "#/definitions/taxonNameType" },
         "taxonID": {
-          "type": "string",
+          "$ref": "#/definitions/identifier",
           "description": "URI or identifier resolving to the taxon concept assigned by this determination."
         },
         "taxonConceptReference": {
@@ -952,7 +1029,28 @@
           "default": false,
           "description": "True when this is the currently recommended interpretation of the occurrence. At most one determination should be preferred."
         },
-        "notes": { "type": "string" }
+        "notes": { "$ref": "#/definitions/notes" }
+      }
+    },
+
+    "surfaceTypeDefinition": {
+      "type": "object",
+      "description": "Definition of a non-living or abiotic surface category, independent of its observed cover.",
+      "required": ["name"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the surface category, e.g. 'litter', 'bare rock', 'open water', or 'fallen dead wood'."
+        },
+        "description": {
+          "type": "string",
+          "description": "Rule defining what belongs to this surface category."
+        },
+        "method": {
+          "$ref": "#/definitions/method",
+          "description": "Method or published scheme used to define this surface category."
+        }
       }
     },
 
@@ -963,8 +1061,7 @@
       "additionalProperties": false,
       "properties": {
         "surfaceType": {
-          "$ref": "#/definitions/categoricalObservedValue",
-          "description": "Type of surface, e.g. 'litter', 'bareRock', 'bareGround', 'water', 'deadWoodStanding', 'deadWoodFallen', 'cryptogamCrust', 'gravel', or 'sand'."
+          "$ref": "#/definitions/surfaceTypeDefinition"
         },
         "coverValuePercentage": {
           "description": "Recorded surface cover percentage.",
@@ -984,49 +1081,77 @@
           "items": { "$ref": "#/definitions/attribute" }
         },
         "attributeGroups": { "$ref": "#/definitions/attributeGroups" },
-        "notes": { "type": "string" }
+        "notes": { "$ref": "#/definitions/notes" }
       }
     },
 
-    "communityType": {
+    "communityConcept": {
       "type": "object",
-      "description": "Assignment of this plot observation to a named vegetation unit (syntaxon). Multiple entries support competing or updated classifications by different authors.",
-      "required": ["syntaxonName"],
+      "description": "A named vegetation community concept, preferably anchored to a published classification.",
+      "required": ["name"],
       "additionalProperties": false,
       "properties": {
-
-        "syntaxonName": {
+        "name": {
           "type": "string",
           "description": "Name of the plant community type, e.g. 'Luzulo-Fagetum Meusel 1937', 'W10 Quercus robur – Pteridium aquilinum woodland' (NVC)."
         },
-
-        "syntaxonCode": {
+        "code": {
           "type": "string",
-          "description": "Code or identifier for the syntaxon within the classification system."
+          "description": "Code for this community concept within its classification system."
         },
-
-        "syntaxonID": {
+        "conceptID": {
+          "$ref": "#/definitions/identifier",
+          "description": "Identifier or URI for this community concept, e.g. an EuroVegChecklist or EUNIS URI."
+        },
+        "rank": {
           "type": "string",
-          "description": "URI of the syntaxon concept in a reference checklist, e.g. an EuroVegChecklist or EUNIS URI."
+          "description": "Rank in the community classification, e.g. class, order, alliance, association, or subassociation."
         },
-
-        "classificationConcept": {
+        "commonName": {
+          "type": "string",
+          "description": "Vernacular or descriptive name for the community concept."
+        },
+        "reference": {
           "$ref": "#/definitions/literatureCitation",
-          "description": "The reference work that defines the syntaxon circumscriptions applied here, anchoring both the methodology and the authority. E.g. Oberdorfer (1992) implies the Braun-Blanquet system; Rodwell (1991) implies NVC. Equivalent to a 'secundum' citation for a syntaxon."
+          "description": "Publication or classification that defines this community concept."
+        }
+      }
+    },
+
+    "communityDetermination": {
+      "type": "object",
+      "description": "An assignment of a vegetation community concept to a plot observation or one of its strata.",
+      "required": ["concept"],
+      "additionalProperties": false,
+      "properties": {
+        "concept": { "$ref": "#/definitions/communityConcept" },
+        "stratumID": {
+          "type": "string",
+          "description": "stratumID to which this determination applies. Omit when it applies to the plot observation as a whole."
         },
-
-        "determinedBy": { "$ref": "#/definitions/party" },
-
         "determinationDate": {
           "type": "string",
           "format": "date",
           "description": "Date this classification was assigned."
         },
-
-        "reference": { "$ref": "#/definitions/literatureCitation" },
-
-        "notes": { "type": "string" }
-
+        "determinedBy": {
+          "type": "array",
+          "description": "People or organizations responsible for this determination.",
+          "items": { "$ref": "#/definitions/party" }
+        },
+        "fit": {
+          "type": "string",
+          "description": "Degree to which the observed vegetation fits the assigned community concept."
+        },
+        "confidence": {
+          "type": "string",
+          "description": "Confidence in this determination, e.g. 'high', 'moderate', or 'low'."
+        },
+        "accordingTo": {
+          "$ref": "#/definitions/literatureCitation",
+          "description": "Authority, publication, or treatment whose interpretation of the community concept is followed in this assertion."
+        },
+        "notes": { "$ref": "#/definitions/notes" }
       }
     },
 
@@ -1212,11 +1337,11 @@
           "description": "Name of the classification system or controlled vocabulary, e.g. Koppen-Geiger, EUNIS, Ramsar, or a national protection scheme."
         },
         "conceptID": {
-          "type": "string",
+          "$ref": "#/definitions/identifier",
           "description": "Identifier or URI for this category within the stated scheme."
         },
         "reference": { "$ref": "#/definitions/literatureCitation" },
-        "notes": { "type": "string" }
+        "notes": { "$ref": "#/definitions/notes" }
       }
     },
 
@@ -1268,7 +1393,7 @@
           "description": "Date this value was recorded, if different from the plot observation date."
         },
         "samplingContext": { "$ref": "#/definitions/samplingContext" },
-        "notes": { "type": "string" },
+        "notes": { "$ref": "#/definitions/notes" },
         "extensions": { "$ref": "#/definitions/extensions" }
       }
     },
@@ -1395,7 +1520,7 @@
           "description": "Method applying to the group as a whole."
         },
         "reference": { "$ref": "#/definitions/literatureCitation" },
-        "notes": { "type": "string" },
+        "notes": { "$ref": "#/definitions/notes" },
         "extensions": { "$ref": "#/definitions/extensions" }
       }
     },
@@ -1483,7 +1608,7 @@
 
     "party": {
       "type": "object",
-      "description": "A person or organization.",
+      "description": "A person, organization, or position and its contact details.",
       "required": ["name"],
       "additionalProperties": false,
       "properties": {
@@ -1493,11 +1618,36 @@
           "pattern": "^\\d{4}-\\d{4}-\\d{4}-\\d{3}[0-9X]$",
           "description": "ORCID identifier without the https://orcid.org/ prefix, e.g. '0000-0001-2345-6789'."
         },
-        "email":        { "type": "string", "format": "email" },
-        "organization": { "type": "string", "description": "Affiliated institution or organization." },
+        "affiliation": { "type": "string", "description": "Institution or organization with which a person is affiliated." },
+        "position": { "type": "string", "description": "Title or position associated with this party." },
         "role": {
           "type": "string",
           "description": "Role in this context, e.g. 'observer', 'identifier', 'dataManager', 'principalInvestigator', 'rightsHolder'."
+        },
+        "contact": {
+          "type": "object",
+          "description": "Contact details for this party.",
+          "additionalProperties": false,
+          "properties": {
+            "addresses": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 }
+            },
+            "phones": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 }
+            },
+            "emails": {
+              "type": "array",
+              "items": { "type": "string", "format": "email" },
+              "uniqueItems": true
+            },
+            "urls": {
+              "type": "array",
+              "items": { "type": "string", "format": "uri" },
+              "uniqueItems": true
+            }
+          }
         }
       }
     },
@@ -1529,15 +1679,46 @@
     "project": {
       "type": "object",
       "description": "Research or monitoring project this data was collected under.",
-      "required": ["projectName"],
+      "required": ["name"],
       "additionalProperties": false,
       "properties": {
-        "projectName": { "type": "string" },
+        "name": { "type": "string" },
         "projectID": {
-          "type": "string",
+          "$ref": "#/definitions/identifier",
           "description": "Unique identifier, e.g. a GBIF dataset key, DOI, or national database code."
         },
-        "description": { "type": "string" },
+        "abstract": {
+          "type": "string",
+          "description": "Brief description of the aims and findings of the project."
+        },
+        "personnel": {
+          "type": "array",
+          "description": "People or organizations involved in the project. Each party's role describes its involvement.",
+          "items": { "$ref": "#/definitions/party" }
+        },
+        "funding": {
+          "type": "string",
+          "description": "Funding information for the project."
+        },
+        "studyAreaDescription": {
+          "type": "string",
+          "description": "Physical study area, potentially including coverage, climate, geology, and disturbance history."
+        },
+        "designDescription": {
+          "type": "string",
+          "description": "Research design, especially the overall plot placement design."
+        },
+        "relatedProjectIDs": {
+          "type": "array",
+          "description": "Identifiers of related projects.",
+          "items": { "$ref": "#/definitions/identifier" },
+          "uniqueItems": true
+        },
+        "references": {
+          "type": "array",
+          "description": "Documents describing the project.",
+          "items": { "$ref": "#/definitions/literatureCitation" }
+        },
         "startYear":  { "type": "integer" },
         "endYear":    { "type": "integer" }
       }
@@ -1545,16 +1726,44 @@
 
     "method": {
       "type": "object",
-      "description": "Survey method or sampling protocol followed.",
-      "required": ["methodName"],
+      "description": "A method used to measure a parameter or create part of the dataset.",
+      "required": ["name"],
       "additionalProperties": false,
       "properties": {
-        "methodName": {
+        "name": {
           "type": "string",
-          "description": "Name of the method or protocol, e.g. 'Braun-Blanquet relevé', 'point-intercept transect'."
+          "description": "Name of the method, e.g. 'Braun-Blanquet relevé', 'point-intercept transect'."
         },
         "description": { "type": "string" },
+        "subject": {
+          "type": "string",
+          "description": "Attribute class measured by this method, e.g. 'plant cover', allowing results from comparable methods to be combined."
+        },
         "reference":   { "$ref": "#/definitions/literatureCitation" }
+      }
+    },
+
+    "protocol": {
+      "type": "object",
+      "description": "An agreed protocol grouping methods related by a common action.",
+      "required": ["name", "methods"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the protocol."
+        },
+        "responsibleParty": {
+          "$ref": "#/definitions/party",
+          "description": "Party responsible for describing the protocol; role describes their involvement."
+        },
+        "reference": { "$ref": "#/definitions/literatureCitation" },
+        "methods": {
+          "type": "array",
+          "description": "Ordered methods or steps comprising this protocol.",
+          "minItems": 1,
+          "items": { "$ref": "#/definitions/method" }
+        }
       }
     },
 

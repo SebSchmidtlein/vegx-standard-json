@@ -41,11 +41,12 @@
       "obsStartDate": "2026-08-06",
       "taxonObservations": [
         {
-          "taxonDeterminations": {
-            "originalDetermination": {
+          "taxonDeterminations": [
+            {
+              "determinationType": "identification",
               "taxonName": "Quercus robur"
             }
-          },
+          ],
           "coverValue": {
             "value": "4",
             "measurementScale": "ordinal",
@@ -54,11 +55,12 @@
           }
         },
         {
-          "taxonDeterminations": {
-            "originalDetermination": {
+          "taxonDeterminations": [
+            {
+              "determinationType": "identification",
               "taxonName": "Urtica dioica"
             }
-          },
+          ],
           "coverValue": {
             "value": "+",
             "measurementScale": "ordinal",
@@ -67,11 +69,12 @@
           }
         },
         {
-          "taxonDeterminations": {
-            "originalDetermination": {
+          "taxonDeterminations": [
+            {
+              "determinationType": "identification",
               "taxonName": "Hylocomium splendens"
             }
-          },
+          ],
           "coverValue": {
             "value": "2a",
             "measurementScale": "ordinal",

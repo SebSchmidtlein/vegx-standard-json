@@ -83,11 +83,12 @@
             ],
             "taxonObservations": [
               {
-                "taxonDeterminations": {
-                  "originalDetermination": {
+                "taxonDeterminations": [
+                  {
+                    "determinationType": "identification",
                     "taxonName": "Quercus robur"
                   }
-                },
+                ],
                 "stratumID": "stratum_1",
                 "coverValue": {
                   "value": 50,
@@ -97,11 +98,12 @@
                 }
               },
               {
-                "taxonDeterminations": {
-                  "originalDetermination": {
+                "taxonDeterminations": [
+                  {
+                    "determinationType": "identification",
                     "taxonName": "Quercus robur"
                   }
-                },
+                ],
                 "stratumID": "stratum_5",
                 "coverValue": {
                   "value": 6,
@@ -111,11 +113,12 @@
                 }
               },
               {
-                "taxonDeterminations": {
-                  "originalDetermination": {
+                "taxonDeterminations": [
+                  {
+                    "determinationType": "identification",
                     "taxonName": "Fagus sylvatica"
                   }
-                },
+                ],
                 "stratumID": "stratum_1",
                 "coverValue": {
                   "value": 41,
@@ -125,11 +128,12 @@
                 }
               },
               {
-                "taxonDeterminations": {
-                  "originalDetermination": {
+                "taxonDeterminations": [
+                  {
+                    "determinationType": "identification",
                     "taxonName": "Fagus sylvatica"
                   }
-                },
+                ],
                 "stratumID": "stratum_5",
                 "coverValue": {
                   "value": 5,

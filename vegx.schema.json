@@ -50,6 +50,12 @@
       "additionalProperties": false,
       "properties": {
 
+        "plotObservationName": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-readable label for this specific observation event, e.g. 'xyz_2026' combining the plot name with the survey year. Distinct from plotObservationID (a stable machine identifier) and obsStartDate (the actual date); a common legacy convention for naming one visit to a resurveyed plot."
+        },
+
         "plotObservationID": {
           "$ref": "#/definitions/identifier",
           "description": "Globally unique identifier for this observation event, e.g. a UUID or LSID. Recommended for data exchange with national databases or GBIF."
@@ -86,6 +92,13 @@
           "type": "array",
           "description": "Stable plotObservationID values for earlier observations explicitly related to this observation. Usually unnecessary when the time series is clear from plotID and obsStartDate.",
           "items": { "$ref": "#/definitions/identifier" },
+          "uniqueItems": true
+        },
+
+        "previousPlotObservationNames": {
+          "type": "array",
+          "description": "Human-readable plotObservationName values for earlier observations explicitly related to this observation, for use when a stable plotObservationID is not available. Usually unnecessary when the time series is clear from plotID and obsStartDate.",
+          "items": { "type": "string", "minLength": 1 },
           "uniqueItems": true
         },
 
@@ -919,28 +932,17 @@
       }
     },
 
-    "taxonNameType": {
-      "type": "string",
-      "enum": ["scientific", "morphospecies", "fieldName", "vernacular", "unknown"],
-      "default": "scientific",
-      "description": "Nature of the taxonName label. Omit when it is an ordinary scientific name."
-    },
-
     "taxonDeterminations": {
-      "type": "object",
-      "description": "Original and subsequent taxonomic or nomenclatural determinations of an occurrence. All determinations use the same self-contained structure.",
-      "required": ["originalDetermination"],
-      "additionalProperties": false,
-      "properties": {
-        "originalDetermination": {
-          "$ref": "#/definitions/taxonDetermination",
-          "description": "Determination attached to the occurrence when it was originally recorded."
-        },
-        "subsequentDeterminations": {
-          "type": "array",
-          "description": "Later identifications or nomenclatural revisions, ordered from oldest to newest.",
-          "minItems": 1,
-          "items": { "$ref": "#/definitions/taxonDetermination" }
+      "type": "array",
+      "description": "Determinations of this occurrence, ordered from oldest to newest. All entries use the same self-contained structure. When there is only one entry it is implicitly the original; when there is more than one, exactly one entry must be marked \"original\": true to identify the determination made when the occurrence was originally recorded.",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/taxonDetermination" },
+      "if": { "minItems": 2 },
+      "then": {
+        "contains": {
+          "type": "object",
+          "required": ["original"],
+          "properties": { "original": { "const": true } }
         }
       }
     },
@@ -952,21 +954,39 @@
       "additionalProperties": false,
       "properties": {
         "taxonName": {
+          "description": "Scientific or informal name assigned to the observed taxon by this determination. Use a plain string for an ordinary name; use the object form to also record the name's type or a supporting nomenclatural reference.",
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "object",
+              "required": ["value"],
+              "additionalProperties": false,
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Name or label assigned to the observed organism."
+                },
+                "type": {
+                  "type": "string",
+                  "enum": ["scientific", "morphospecies", "fieldName", "vernacular"],
+                  "description": "Nature of the name or label. Omit when it was not recorded or cannot be established."
+                },
+                "reference": {
+                  "$ref": "#/definitions/literatureCitation",
+                  "description": "Nomenclatural source supporting the name's spelling, authorship, synonymy, or accepted status."
+                }
+              }
+            }
+          ]
+        },
+        "determinationType": {
           "type": "string",
-          "description": "Taxon name assigned by this determination, including author citation when available."
-        },
-        "nameType": { "$ref": "#/definitions/taxonNameType" },
-        "taxonID": {
-          "$ref": "#/definitions/identifier",
-          "description": "URI or identifier resolving to the taxon concept assigned by this determination."
-        },
-        "taxonConceptReference": {
-          "$ref": "#/definitions/literatureCitation",
-          "description": "Taxonomic treatment defining the circumscription used in this determination. Do not use a nomenclatural checklist here unless it also defines that circumscription."
-        },
-        "nameReference": {
-          "$ref": "#/definitions/literatureCitation",
-          "description": "Nomenclatural source or reference list supporting the determined name's spelling, authorship, synonymy, or accepted-name status without implying that it defines a taxon concept."
+          "enum": ["identification", "nomenclatural"],
+          "description": "identification assigns the observed organism to a taxon, potentially according to a taxon concept; nomenclatural changes only the name or accepted-name interpretation without reassessing taxonomic identity."
         },
         "determinationDate": {
           "type": "string",
@@ -983,22 +1003,35 @@
           "description": "Voucher specimen identifiers or herbarium accession numbers supporting this determination.",
           "items": { "type": "string" }
         },
-        "fit": {
-          "type": "string",
-          "description": "Degree to which the observed organism fits the assigned taxon concept, using a stated or commonly understood scale."
-        },
-        "confidence": {
+        "determinationConfidence": {
           "type": "string",
           "description": "Confidence in this determination, e.g. 'high', 'moderate', or 'low'."
-        },
-        "accordingTo": {
-          "$ref": "#/definitions/literatureCitation",
-          "description": "Publication or treatment whose taxonomic or nomenclatural view is followed."
         },
         "preferred": {
           "type": "boolean",
           "default": false,
-          "description": "True when this is the currently recommended interpretation of the occurrence. At most one determination should be preferred."
+          "description": "True when this is the currently recommended interpretation of the occurrence."
+        },
+        "original": {
+          "type": "boolean",
+          "description": "True when this is the determination made when the occurrence was originally recorded. Omit when taxonDeterminations has only one entry, which is then implicitly the original. When there is more than one entry, exactly one should be marked true; JSON Schema cannot enforce this uniqueness."
+        },
+        "taxonConcept": {
+          "type": "object",
+          "description": "Taxon concept applied by this determination, defined by the organism name and a taxonomic treatment.",
+          "required": ["reference"],
+          "additionalProperties": false,
+          "properties": {
+            "reference": {
+              "$ref": "#/definitions/literatureCitation",
+              "description": "Taxonomic treatment defining the concept's circumscription. Do not use a nomenclatural checklist unless it also defines that circumscription."
+            },
+            "fit": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Degree to which the observed organism fits this taxon concept, using a stated or commonly understood scale."
+            }
+          }
         },
         "notes": { "$ref": "#/definitions/notes" }
       }
@@ -1872,10 +1905,12 @@
       "properties": {
         "citationString": {
           "type": "string",
+          "minLength": 1,
           "description": "Full citation as a formatted string, e.g. 'Braun-Blanquet, J. (1964). Pflanzensoziologie. 3rd ed. Springer, Vienna.'"
         },
         "doi": {
           "type": "string",
+          "minLength": 1,
           "description": "DOI without the https://doi.org/ prefix, e.g. '10.1007/s12080-012-0168-7'."
         },
         "url": {
@@ -1890,9 +1925,16 @@
         },
         "csl": {
           "type": "object",
+          "minProperties": 1,
           "description": "Structured citation encoded as one CSL-JSON item. Use when bibliographic detail beyond the lightweight fields above is needed."
         }
-      }
+      },
+      "anyOf": [
+        { "required": ["citationString"] },
+        { "required": ["doi"] },
+        { "required": ["url"] },
+        { "required": ["csl"] }
+      ]
     },
 
     "geoJsonGeometry": {

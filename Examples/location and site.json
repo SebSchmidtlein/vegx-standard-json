@@ -69,11 +69,12 @@
             },
             "taxonObservations": [
               {
-                "taxonDeterminations": {
-                  "originalDetermination": {
+                "taxonDeterminations": [
+                  {
+                    "determinationType": "identification",
                     "taxonName": "Quercus robur"
                   }
-                }
+                ]
               }
             ],
             "surfaceObservations": [

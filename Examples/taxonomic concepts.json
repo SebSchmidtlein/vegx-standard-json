@@ -12,19 +12,25 @@
             "obsStartDate": "2026-08-06",
             "taxonObservations": [
               {
-                "taxonDeterminations": {
-                  "originalDetermination": {
+                "taxonDeterminations": [
+                  {
                     "taxonName": "Quercus petraea",
-                    "taxonConceptReference": {
-                      "citationString": "Tutin, T. G. et al. (eds.) (1964-1980): Flora Europaea, Vols. 1-5. Cambridge University Press."
+                    "determinationType": "identification",
+                    "original": true,
+                    "taxonConcept": {
+                      "reference": {
+                        "citationString": "Tutin, T. G. et al. (eds.) (1964-1980): Flora Europaea, Vols. 1-5. Cambridge University Press."
+                      }
                     }
                   },
-                  "subsequentDeterminations": [
-                    {
-                    "taxonName": "Quercus petraea (Matt.) Liebl.",
-                    "nameReference": {
-                      "citationString": "Jansen, F. & Dengler, J. (2008): GermanSL - Eine universelle taxonomische Referenzliste fuer Vegetationsdatenbanken in Deutschland. Tuexenia 28: 239-253."
+                  {
+                    "taxonName": {
+                      "value": "Quercus petraea (Matt.) Liebl.",
+                      "reference": {
+                        "citationString": "Jansen, F. & Dengler, J. (2008): GermanSL - Eine universelle taxonomische Referenzliste fuer Vegetationsdatenbanken in Deutschland. Tuexenia 28: 239-253."
+                      }
                     },
+                    "determinationType": "nomenclatural",
                     "determinationDate": "2026-08-06",
                     "preferred": true,
                     "notes": [
@@ -33,29 +39,34 @@
                         "date": "2026-08-06"
                       }
                     ]
-                    }
-                  ]
-                }
+                  }
+                ]
               },
               {
-                "taxonDeterminations": {
-                  "originalDetermination": {
+                "taxonDeterminations": [
+                  {
                     "taxonName": "Fagus sylvatica",
-                    "taxonConceptReference": {
-                      "citationString": "Flora europaea"
+                    "determinationType": "identification",
+                    "taxonConcept": {
+                      "reference": {
+                        "citationString": "Flora europaea"
+                      }
                     }
                   }
-                }
+                ]
               },
               {
-                "taxonDeterminations": {
-                  "originalDetermination": {
+                "taxonDeterminations": [
+                  {
                     "taxonName": "Urtica dioica",
-                    "taxonConceptReference": {
-                      "citationString": "Rothmaler"
+                    "determinationType": "identification",
+                    "taxonConcept": {
+                      "reference": {
+                        "citationString": "Rothmaler"
+                      }
                     }
                   }
-                }
+                ]
               }
             ]
           }

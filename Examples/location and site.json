@@ -1,0 +1,114 @@
+{
+  "vegxVersion": "3.0",
+  "dataset": {
+    "projects": [
+      {
+        "projectName": "location and site",
+        "plotObservations": [
+          {
+            "plot": {
+              "plotName": "1",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [8.39331179, 48.93053637]
+              },
+              "locationAccuracy": {
+                "value": 15.19892406463623,
+                "measurementScale": "ratio",
+                "unit": "m"
+              },
+              "elevation": {
+                "value": 110,
+                "measurementScale": "ratio",
+                "unit": "m"
+              },
+              "area": {
+                "value": 100,
+                "measurementScale": "ratio",
+                "unit": "m2"
+              },
+              "shape": "square"
+            },
+            "obsStartDate": "2026-08-06",
+            "taxonomicCoverage": [
+              {
+                "taxonGroup": "mosses",
+                "identificationStatus": "identified"
+              },
+              {
+                "taxonGroup": "lichens",
+                "identificationStatus": "not identified"
+              }
+            ],
+            "siteObservations": {
+              "aspect": {
+                "value": 253,
+                "measurementScale": "ratio",
+                "unit": "degree"
+              },
+              "slope": {
+                "value": 26,
+                "measurementScale": "ratio",
+                "unit": "degree"
+              },
+              "soilType": {
+                "value": "Terra Fusca",
+                "measurementScale": "nominal"
+              },
+              "soilDepth": {
+                "value": 214,
+                "measurementScale": "ratio",
+                "unit": "cm"
+              },
+              "habitats": [
+                {
+                  "value": "LRT 5375",
+                  "scheme": "LRT"
+                }
+              ]
+            },
+            "taxonObservations": [
+              {
+                "taxonDeterminations": {
+                  "originalDetermination": {
+                    "taxonName": "Quercus robur"
+                  }
+                }
+              }
+            ],
+            "surfaceObservations": [
+              {
+                "surfaceType": {
+                  "name": "Live plants"
+                },
+                "coverValue": {
+                  "value": 20,
+                  "measurementScale": "ratio",
+                  "unit": "%",
+                  "method": "Visual estimate"
+                }
+              },
+              {
+                "surfaceType": {
+                  "name": "Bare ground"
+                },
+                "coverValue": {
+                  "value": 1,
+                  "measurementScale": "ratio",
+                  "unit": "%",
+                  "method": "Visual estimate"
+                }
+              }
+            ],
+            "notes": [
+              {
+                "text": "nope",
+                "category": "observation"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

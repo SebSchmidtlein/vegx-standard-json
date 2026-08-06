@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='ISO-8859-1' standalone='yes' ?>
+<vegX xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dwg="http://rs.tdwg.org/dwc/geospatial/" xmlns:tcs="http://www.tdwg.org/schemas/tcs/1.01">
+  <literatureCitations>
+    <literatureCitation id="taxonConcept_citation_species_187">
+      <citationString>Tutin, T. G. et al. (eds.) (1964-1980): Flora Europaea, Vols. 1-5. Cambridge University Press.</citationString>
+    </literatureCitation>
+    <literatureCitation id="taxonConcept_citation_species_188">
+      <citationString>Flora europaea</citationString>
+    </literatureCitation>
+    <literatureCitation id="taxonConcept_citation_species_189">
+      <citationString>Rothmaler</citationString>
+    </literatureCitation>
+    <literatureCitation id="nomenclature_citation_germansl">
+      <citationString>Jansen, F. &amp; Dengler, J. (2008): GermanSL - Eine universelle taxonomische Referenzliste fuer Vegetationsdatenbanken in Deutschland. Tuexenia 28: 239-253.</citationString>
+    </literatureCitation>
+  </literatureCitations>
+  <methods>
+    <method id="customLayerSystem">
+      <name>taxonomic concepts_Layers</name>
+      <description>No vertical differentiation</description>
+      <subject>Classification of vegetation layers (strata, tiers)</subject>
+    </method>
+  </methods>
+  <strata>
+    <stratum id="stratum_1">
+      <stratumName>na</stratumName>
+      <methodID>customLayerSystem</methodID>
+      <definition />
+      <order>1</order>
+      <lowerLimit>0</lowerLimit>
+    </stratum>
+  </strata>
+  <organismNames>
+    <organismName id="organismName_187" taxonName="true">Quercus petraea</organismName>
+    <organismName id="organismName_187_preferred" taxonName="true">Quercus petraea (Matt.) Liebl.</organismName>
+    <organismName id="organismName_188" taxonName="true">Fagus sylvatica</organismName>
+    <organismName id="organismName_189" taxonName="true">Urtica dioica</organismName>
+  </organismNames>
+  <taxonConcepts>
+    <taxonConcept id="taxonConcept_species_187">
+      <organismNameID>organismName_187</organismNameID>
+      <accordingToCitationID>taxonConcept_citation_species_187</accordingToCitationID>
+    </taxonConcept>
+    <taxonConcept id="taxonConcept_species_188">
+      <organismNameID>organismName_188</organismNameID>
+      <accordingToCitationID>taxonConcept_citation_species_188</accordingToCitationID>
+    </taxonConcept>
+    <taxonConcept id="taxonConcept_species_189">
+      <organismNameID>organismName_189</organismNameID>
+      <accordingToCitationID>taxonConcept_citation_species_189</accordingToCitationID>
+    </taxonConcept>
+  </taxonConcepts>
+  <organismIdentities>
+    <organismIdentity id="organismIdentitiy_187">
+      <originalOrganismNameID>organismName_187</originalOrganismNameID>
+      <originalIdentificationConcept>
+        <taxonConceptID>taxonConcept_species_187</taxonConceptID>
+      </originalIdentificationConcept>
+      <preferredTaxonNomenclature>
+        <preferredOrganismNameID>organismName_187_preferred</preferredOrganismNameID>
+        <interpretationDate>2026-08-06</interpretationDate>
+        <interpretationSource>GermanSL v.1.5.6</interpretationSource>
+        <interpretationCitationID>nomenclature_citation_germansl</interpretationCitationID>
+        <interpretationNote>
+          <text>Authored name retained as the preferred nomenclatural label.</text>
+          <date>2026-08-06</date>
+        </interpretationNote>
+      </preferredTaxonNomenclature>
+    </organismIdentity>
+    <organismIdentity id="organismIdentitiy_188">
+      <originalOrganismNameID>organismName_188</originalOrganismNameID>
+      <originalIdentificationConcept>
+        <taxonConceptID>taxonConcept_species_188</taxonConceptID>
+      </originalIdentificationConcept>
+    </organismIdentity>
+    <organismIdentity id="organismIdentitiy_189">
+      <originalOrganismNameID>organismName_189</originalOrganismNameID>
+      <originalIdentificationConcept>
+        <taxonConceptID>taxonConcept_species_189</taxonConceptID>
+      </originalIdentificationConcept>
+    </organismIdentity>
+  </organismIdentities>
+  <projects>
+    <project id="16">
+      <title>taxonomic concepts</title>
+    </project>
+  </projects>
+  <plots>
+    <plot id="40">
+      <plotName>1</plotName>
+    </plot>
+  </plots>
+  <plotObservations>
+    <plotObservation id="plotObservation_40">
+      <plotID>40</plotID>
+      <obsStartDate>2026-08-06</obsStartDate>
+      <plotObservationUniqueIdentifier>1</plotObservationUniqueIdentifier>
+      <projectID>16</projectID>
+    </plotObservation>
+  </plotObservations>
+  <aggregateOrganismObservations>
+    <aggregateOrganismObservation id="aggregateObservation_187">
+      <plotObservationID>plotObservation_40</plotObservationID>
+      <organismIdentityID>organismIdentitiy_187</organismIdentityID>
+    </aggregateOrganismObservation>
+    <aggregateOrganismObservation id="aggregateObservation_188">
+      <plotObservationID>plotObservation_40</plotObservationID>
+      <organismIdentityID>organismIdentitiy_188</organismIdentityID>
+    </aggregateOrganismObservation>
+    <aggregateOrganismObservation id="aggregateObservation_189">
+      <plotObservationID>plotObservation_40</plotObservationID>
+      <organismIdentityID>organismIdentitiy_189</organismIdentityID>
+    </aggregateOrganismObservation>
+  </aggregateOrganismObservations>
+  <note>
+    <text>Data collection and export were done using Vegapp for Android.</text>
+    <date>2026-08-06</date>
+  </note>
+  <note>
+    <text>Species reference list used while exporting this data (not necessarily while creating this data): Ge
+rmanSL v.1.5.6. This reference list is based on GermanSL, Taxonomische Referenzliste f&#252;r Botanische 
+Funddatenbanken in Deutschland, published by F. Jansen, University of Rostock. Please cite it if you
+ used the list: Jansen, F., Dengler, J. (2008): GermanSL &#8211; Eine universelle taxonomische Referenzlis
+te f&#252;r Vegetationsdatenbanken in Deutschland. Tuexenia 28: 239-253</text>
+    <date>2026-08-06</date>
+  </note>
+</vegX>

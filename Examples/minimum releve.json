@@ -1,0 +1,18 @@
+{
+  "vegxVersion": "3.0",
+  "dataset": {
+    "projects": [
+      {
+        "projectName": "minimum releve",
+        "plotObservations": [
+          {
+            "plot": {
+              "plotName": "no. 1"
+            },
+            "obsStartDate": "2026-08-06"
+          }
+        ]
+      }
+    ]
+  }
+}

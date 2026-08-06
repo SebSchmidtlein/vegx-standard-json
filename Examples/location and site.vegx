@@ -1,0 +1,266 @@
+<?xml version='1.0' encoding='ISO-8859-1' standalone='yes' ?>
+<vegX xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dwg="http://rs.tdwg.org/dwc/geospatial/" xmlns:tcs="http://www.tdwg.org/schemas/tcs/1.01">
+  <methods>
+    <method id="customLayerSystem">
+      <name>location and site_Layers</name>
+      <description>No vertical differentiation</description>
+      <subject>Classification of vegetation layers (strata, tiers)</subject>
+    </method>
+    <method id="method_location_accuracy">
+      <name>Location accuracy</name>
+      <description />
+      <subject>Location accuracy</subject>
+      <citationString />
+    </method>
+    <method id="method_elevation">
+      <name>Elevation above sea level</name>
+      <description />
+      <subject>Elevation above sea level</subject>
+      <citationString />
+    </method>
+    <method id="method_plot_area">
+      <name>Plot surface area</name>
+      <description />
+      <subject>Plot surface area</subject>
+      <citationString />
+    </method>
+    <method id="method_aspect">
+      <name>Aspect</name>
+      <description />
+      <subject>Aspect</subject>
+      <citationString />
+    </method>
+    <method id="method_slope">
+      <name>Slope</name>
+      <description />
+      <subject>Slope</subject>
+      <citationString />
+    </method>
+    <method id="method_surface_cover">
+      <name>Cover of surface material</name>
+      <description>Visual estimate</description>
+      <subject>Cover of surface material</subject>
+      <citationString />
+    </method>
+    <method id="method_geographic_coordinates">
+      <name>Geographic latitude and longitude</name>
+      <description />
+      <subject>Coordinate system</subject>
+      <citationString />
+    </method>
+    <method id="method_soil_depth">
+      <name>Soil depth</name>
+      <description />
+      <subject>Soil depth</subject>
+      <citationString />
+    </method>
+    <method id="method_habitat_scheme_lrt">
+      <name>LRT</name>
+      <description />
+      <subject>Habitat classification</subject>
+      <citationString />
+    </method>
+  </methods>
+  <attributes>
+    <attribute id="location_accuracy">
+      <quantitative>
+        <methodID>method_location_accuracy</methodID>
+        <unit>m</unit>
+      </quantitative>
+    </attribute>
+    <attribute id="elevation">
+      <quantitative>
+        <methodID>method_elevation</methodID>
+        <unit>m</unit>
+      </quantitative>
+    </attribute>
+    <attribute id="plot_area">
+      <quantitative>
+        <methodID>method_plot_area</methodID>
+        <unit>m&#178;</unit>
+      </quantitative>
+    </attribute>
+    <attribute id="aspect">
+      <quantitative>
+        <methodID>method_aspect</methodID>
+        <unit>&#176;</unit>
+      </quantitative>
+    </attribute>
+    <attribute id="slope">
+      <quantitative>
+        <methodID>method_slope</methodID>
+        <unit>&#176;</unit>
+      </quantitative>
+    </attribute>
+    <attribute id="surface_cover">
+      <quantitative>
+        <methodID>method_surface_cover</methodID>
+        <unit>%</unit>
+      </quantitative>
+    </attribute>
+    <attribute id="geographic_coordinates">
+      <quantitative>
+        <methodID>method_geographic_coordinates</methodID>
+        <unit>Decimal degrees</unit>
+      </quantitative>
+    </attribute>
+    <attribute id="soil_depth">
+      <quantitative>
+        <methodID>method_soil_depth</methodID>
+        <unit>cm</unit>
+      </quantitative>
+    </attribute>
+    <attribute id="habitat_lrt_5375">
+      <qualitative>
+        <methodID>method_habitat_scheme_lrt</methodID>
+        <code>LRT 5375</code>
+      </qualitative>
+    </attribute>
+  </attributes>
+  <strata>
+    <stratum id="stratum_1">
+      <stratumName>na</stratumName>
+      <methodID>customLayerSystem</methodID>
+      <definition />
+      <order>1</order>
+      <lowerLimit>0</lowerLimit>
+    </stratum>
+  </strata>
+  <surfaceTypes>
+    <surfaceType id="surfaceType_foliage">
+      <surfaceName>Live Plants</surfaceName>
+    </surfaceType>
+    <surfaceType id="surfaceType_bare_ground">
+      <surfaceName>Bare ground</surfaceName>
+    </surfaceType>
+  </surfaceTypes>
+  <organismNames>
+    <organismName id="organismName_186" taxonName="true">Quercus robur</organismName>
+  </organismNames>
+  <organismIdentities>
+    <organismIdentity id="organismIdentitiy_186">
+      <originalOrganismNameID>organismName_186</originalOrganismNameID>
+      <originalIdentificationConcept>
+        <taxonConceptID />
+      </originalIdentificationConcept>
+    </organismIdentity>
+  </organismIdentities>
+  <projects>
+    <project id="15">
+      <title>location and site</title>
+    </project>
+  </projects>
+  <plots>
+    <plot id="38">
+      <plotName>1</plotName>
+      <location>
+        <horizontalCoordinates>
+          <coordinates>
+            <valueX>8.39331179</valueX>
+            <valueY>48.93053637</valueY>
+            <attributeID>geographic_coordinates</attributeID>
+            <spatialReference>EPSG:4326</spatialReference>
+            <locationAccuracy>
+              <value>15.19892406463623</value>
+              <attributeID>location_accuracy</attributeID>
+            </locationAccuracy>
+          </coordinates>
+        </horizontalCoordinates>
+        <verticalCoordinates>
+          <elevation>
+            <value>110</value>
+            <attributeID>elevation</attributeID>
+          </elevation>
+        </verticalCoordinates>
+      </location>
+      <geometry>
+        <area>
+          <value>100</value>
+          <attributeID>plot_area</attributeID>
+        </area>
+        <shape>square</shape>
+      </geometry>
+      <topography>
+        <aspect>
+          <value>253</value>
+          <attributeID>aspect</attributeID>
+        </aspect>
+        <slope>
+          <value>26</value>
+          <attributeID>slope</attributeID>
+        </slope>
+      </topography>
+    </plot>
+  </plots>
+  <plotObservations>
+    <plotObservation id="plotObservation_38">
+      <plotID>38</plotID>
+      <obsStartDate>2026-08-06</obsStartDate>
+      <plotObservationUniqueIdentifier>1</plotObservationUniqueIdentifier>
+      <projectID>15</projectID>
+      <siteObservationID>siteObservation_38</siteObservationID>
+      <taxonomicQuality>
+        <qualityAssessment>True</qualityAssessment>
+        <assessmentType>Mosses identification status</assessmentType>
+      </taxonomicQuality>
+      <taxonomicQuality>
+        <qualityAssessment>False</qualityAssessment>
+        <assessmentType>Lichens identification status</assessmentType>
+      </taxonomicQuality>
+      <observationNarrative>nope</observationNarrative>
+    </plotObservation>
+  </plotObservations>
+  <aggregateOrganismObservations>
+    <aggregateOrganismObservation id="aggregateObservation_186">
+      <plotObservationID>plotObservation_38</plotObservationID>
+      <organismIdentityID>organismIdentitiy_186</organismIdentityID>
+    </aggregateOrganismObservation>
+  </aggregateOrganismObservations>
+  <surfaceCoverObservations>
+    <surfaceCoverObservation id="surfaceCoverObservation_38_foliage">
+      <plotObservationID>plotObservation_38</plotObservationID>
+      <surfaceTypeID>surfaceType_foliage</surfaceTypeID>
+      <surfaceCover>
+        <value>20</value>
+        <attributeID>surface_cover</attributeID>
+      </surfaceCover>
+    </surfaceCoverObservation>
+    <surfaceCoverObservation id="surfaceCoverObservation_38_bare_ground">
+      <plotObservationID>plotObservation_38</plotObservationID>
+      <surfaceTypeID>surfaceType_bare_ground</surfaceTypeID>
+      <surfaceCover>
+        <value>1</value>
+        <attributeID>surface_cover</attributeID>
+      </surfaceCover>
+    </surfaceCoverObservation>
+  </surfaceCoverObservations>
+  <siteObservations>
+    <siteObservation id="siteObservation_38">
+      <plotObservationID>plotObservation_38</plotObservationID>
+      <soilType>
+        <value>Terra Fusca</value>
+      </soilType>
+      <habitat>
+        <value>LRT 5375</value>
+        <qualitativeAttributeID>habitat_lrt_5375</qualitativeAttributeID>
+      </habitat>
+      <simpleUserDefined>
+        <name>Soil depth</name>
+        <value>214</value>
+        <attributeID>soil_depth</attributeID>
+      </simpleUserDefined>
+    </siteObservation>
+  </siteObservations>
+  <note>
+    <text>Data collection and export were done using Vegapp for Android.</text>
+    <date>2026-08-06</date>
+  </note>
+  <note>
+    <text>Species reference list used while exporting this data (not necessarily while creating this data): Ge
+rmanSL v.1.5.6. This reference list is based on GermanSL, Taxonomische Referenzliste f&#252;r Botanische 
+Funddatenbanken in Deutschland, published by F. Jansen, University of Rostock. Please cite it if you
+ used the list: Jansen, F., Dengler, J. (2008): GermanSL &#8211; Eine universelle taxonomische Referenzlis
+te f&#252;r Vegetationsdatenbanken in Deutschland. Tuexenia 28: 239-253</text>
+    <date>2026-08-06</date>
+  </note>
+</vegX>

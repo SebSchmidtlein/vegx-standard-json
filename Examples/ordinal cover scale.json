@@ -1,0 +1,88 @@
+{
+  "vegxVersion": "3.0",
+  "dataset": {
+    "projects": [
+      {
+        "projectName": "Ordinal cover scale",
+        "coverScales": [
+      {
+        "scaleName": "Braun/Blanquet (new)",
+        "description": "Ordinal cover scale",
+        "values": [
+          { "code": "r" },
+          { "code": "+" },
+          { "code": "1" },
+          { "code": "2m" },
+          { "code": "2a" },
+          { "code": "2b" },
+          { "code": "3" },
+          { "code": "4" },
+          { "code": "5" }
+        ]
+      }
+      ],
+      "notes": [
+      {
+        "text": "Data collection and export were done using Vegapp for Android.",
+        "date": "2026-08-06",
+        "category": "dataManagement"
+      },
+      {
+        "text": "Species reference list used while exporting this data (not necessarily while creating this data): GermanSL v.1.5.6. This reference list is based on GermanSL, Taxonomische Referenzliste für Botanische Funddatenbanken in Deutschland, published by F. Jansen, University of Rostock. Please cite it if you used the list: Jansen, F., Dengler, J. (2008): GermanSL – Eine universelle taxonomische Referenzliste für Vegetationsdatenbanken in Deutschland. Tuexenia 28: 239-253",
+        "date": "2026-08-06",
+        "category": "dataManagement"
+      }
+        ],
+        "plotObservations": [
+    {
+      "plot": {
+        "plotName": "no. 1"
+      },
+      "obsStartDate": "2026-08-06",
+      "taxonObservations": [
+        {
+          "taxonDeterminations": {
+            "originalDetermination": {
+              "taxonName": "Quercus robur"
+            }
+          },
+          "coverValue": {
+            "value": "4",
+            "measurementScale": "ordinal",
+            "method": "Visual estimate",
+            "coverScale": "Braun/Blanquet (new)"
+          }
+        },
+        {
+          "taxonDeterminations": {
+            "originalDetermination": {
+              "taxonName": "Urtica dioica"
+            }
+          },
+          "coverValue": {
+            "value": "+",
+            "measurementScale": "ordinal",
+            "method": "Visual estimate",
+            "coverScale": "Braun/Blanquet (new)"
+          }
+        },
+        {
+          "taxonDeterminations": {
+            "originalDetermination": {
+              "taxonName": "Hylocomium splendens"
+            }
+          },
+          "coverValue": {
+            "value": "2a",
+            "measurementScale": "ordinal",
+            "method": "Visual estimate",
+            "coverScale": "Braun/Blanquet (new)"
+          }
+        }
+      ]
+    }
+        ]
+      }
+    ]
+  }
+}

@@ -2,9 +2,9 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://iavs.org/vegx/schema/3.0/vegx.schema.json",
   "title": "VegX 3.0 – Vegetation Plot Exchange Standard",
-  "description": "JSON Schema for exchanging vegetation plot (relevé) data. A dataset file may contain dataset-level metadata and zero or more plotObservation records. Each plotObservation is the complete record of a single plot surveyed at a specific time: plot identity and location, observer and method metadata, user-defined stratum definitions, taxon occurrences by stratum, site observations, community type assignments, and broader community-level observations. This schema replaces the VegX 2.x XSD format; it covers the same information model with document-centric design rather than normalised ID references.",
+  "description": "JSON Schema for exchanging vegetation plot (relevé) data. A dataset contains one or more self-contained projects, each with its metadata, shared definitions, and plotObservation records. Each plotObservation is the complete record of a single plot surveyed at a specific time: plot identity and location, observer and method metadata, user-defined stratum definitions, taxon occurrences by stratum, site observations, community type assignments, and broader community-level observations. This schema replaces the VegX 2.x XSD format; it covers the same information model with document-centric design rather than normalised ID references.",
   "type": "object",
-  "required": ["vegxVersion"],
+  "required": ["vegxVersion", "dataset"],
   "additionalProperties": false,
 
   "properties": {
@@ -17,57 +17,29 @@
 
     "dataset": {
       "$ref": "#/definitions/dataset"
-    },
-
-    "plotObservations": {
-      "type": "array",
-      "description": "Zero or more plot observation records. Each record is the complete survey of one plot at one point in time.",
-      "items": { "$ref": "#/definitions/plotObservation" }
-    },
-
-    "extensions": {
-      "$ref": "#/definitions/extensions",
-      "description": "Non-standard metadata applying to this VegX document."
     }
-
   },
 
   "definitions": {
 
     "dataset": {
       "type": "object",
-      "description": "Dataset-level metadata shared across all plot observations in this file. All fields are optional; they can alternatively be specified per plotObservation.",
+      "description": "Container for one or more self-contained projects and provenance for generation of this VegX document.",
+      "required": ["projects"],
       "additionalProperties": false,
       "properties": {
-        "title":       { "type": "string" },
-        "description": { "type": "string" },
-        "license": { "$ref": "#/definitions/license" },
         "projects": {
           "type": "array",
-          "description": "Research or monitoring projects associated with the dataset.",
+          "description": "Research or monitoring projects contained in this dataset.",
+          "minItems": 1,
           "items": { "$ref": "#/definitions/project" }
         },
-        "parties": {
+        "generatedBy": {
           "type": "array",
-          "description": "People and organizations associated with the dataset as a whole.",
-          "items": { "$ref": "#/definitions/party" }
-        },
-        "methods": {
-          "type": "array",
-          "description": "Survey methods used independently rather than as part of a protocol. Methods that belong to a protocol are listed within that protocol instead.",
-          "items": { "$ref": "#/definitions/method" }
-        },
-        "protocols": {
-          "type": "array",
-          "description": "Protocols grouping methods related by a common action.",
-          "items": { "$ref": "#/definitions/protocol" }
-        },
-        "coverScales": {
-          "type": "array",
-          "description": "Definitions of cover or abundance scales used in this dataset. Referenced by name (coverScale) from taxonObservation and surfaceObservation records. Well-known scales (Braun-Blanquet, Domin, DAFOR, van der Maarel, percentage) need not be defined here unless custom midpoints are needed.",
-          "items": { "$ref": "#/definitions/coverScale" }
-        },
-        "extensions": { "$ref": "#/definitions/extensions" }
+          "description": "Ordered software operations that generated or transformed this dataset.",
+          "minItems": 1,
+          "items": { "$ref": "#/definitions/generationEvent" }
+        }
       }
     },
 
@@ -97,12 +69,6 @@
           "description": "Date the observation ended, if it spans multiple days."
         },
 
-        "projects": {
-          "type": "array",
-          "description": "One or more research or monitoring projects associated with this observation.",
-          "items": { "$ref": "#/definitions/project" }
-        },
-
         "observers": {
           "type": "array",
           "description": "People or organizations who carried out this survey.",
@@ -113,7 +79,7 @@
 
         "license": {
           "$ref": "#/definitions/license",
-          "description": "License for this observation when different from the dataset-level license."
+          "description": "License for this observation when different from the project-level license."
         },
 
         "previousPlotObservationIDs": {
@@ -180,28 +146,38 @@
 
         "surfaceObservations": {
           "type": "array",
-          "description": "Cover observations for non-living or non-vascular surface elements such as litter, bare rock, open water. Supplements taxonObservations to allow total cover accounting.",
+          "description": "Cover observations for aggregate living or non-living surface categories such as total live plants, litter, bare rock, or open water. Supplements taxonObservations to allow total cover accounting without assigning aggregate cover to a taxon.",
           "items": { "$ref": "#/definitions/surfaceObservation" }
         },
 
         "taxonomicCoverage": {
           "type": "array",
-          "description": "Assessment of the taxonomic completeness of this survey per taxon group. Equivalent to the VegX 2.x taxonomicQuality element.",
+          "description": "Assessment of identification status and survey completeness per taxon group. Equivalent to the VegX 2.x taxonomicQuality element.",
           "items": {
             "type": "object",
-            "required": ["taxonGroup", "coverage"],
+            "required": ["taxonGroup"],
             "additionalProperties": false,
             "properties": {
               "taxonGroup": {
                 "type": "string",
                 "description": "Taxon group assessed, e.g. 'vascular plants', 'bryophytes', 'lichens', 'fungi'."
               },
-              "coverage": {
+              "identificationStatus": {
                 "type": "string",
-                "description": "Coverage quality, e.g. 'complete', 'incomplete', 'not surveyed'. Free text or from a controlled vocabulary."
+                "minLength": 1,
+                "description": "Whether and to what level this taxon group was identified, e.g. 'identified', 'partially identified', or 'not identified'. Free text or from a controlled vocabulary."
+              },
+              "completeness": {
+                "type": "string",
+                "minLength": 1,
+                "description": "How completely the survey recorded this taxon group, e.g. 'complete', 'incomplete', or 'not surveyed'. Free text or from a controlled vocabulary."
               },
               "notes": { "$ref": "#/definitions/notes" }
-            }
+            },
+            "anyOf": [
+              { "required": ["identificationStatus"] },
+              { "required": ["completeness"] }
+            ]
           }
         },
 
@@ -300,6 +276,40 @@
       "items": { "$ref": "#/definitions/note" }
     },
 
+    "generationEvent": {
+      "type": "object",
+      "description": "A software operation that generated, exported, converted, or otherwise transformed this dataset.",
+      "required": ["softwareName"],
+      "additionalProperties": false,
+      "properties": {
+        "softwareName": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Name of the software that performed the operation, e.g. 'Vegapp for Android'."
+        },
+        "softwareVersion": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Version of the software, when known."
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date the operation was performed, in ISO 8601 format (yyyy-mm-dd)."
+        },
+        "operation": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Operation performed, e.g. 'export' or 'XML-to-JSON conversion'."
+        },
+        "softwareURL": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL identifying the software or its source repository."
+        }
+      }
+    },
+
     "note": {
       "type": "object",
       "description": "A comment or explanation about the containing record.",
@@ -329,6 +339,7 @@
 
         "plotName": {
           "type": "string",
+          "minLength": 1,
           "description": "Name or alphanumeric code identifying this plot."
         },
 
@@ -351,28 +362,29 @@
           "description": "EPSG code or Proj string of the CRS used for geometry coordinates, if not EPSG:4326. E.g. 'EPSG:28992' (Dutch RD New), 'EPSG:32632' (UTM zone 32N on WGS84 datum). Required whenever coordinates are not geographic longitude/latitude."
         },
 
-        "locationAccuracy_m": {
-          "$ref": "#/definitions/nonNegativeObservedValue",
-          "description": "Estimated positional accuracy of the coordinates in metres."
+        "locationAccuracy": {
+          "$ref": "#/definitions/nonNegativeObservedValueWithUnit",
+          "description": "Estimated positional accuracy of the coordinates. State the unit."
         },
 
-        "areaSqm": {
-          "$ref": "#/definitions/positiveObservedValue",
-          "description": "Area of the plot in square metres."
+        "area": {
+          "$ref": "#/definitions/positiveObservedValueWithUnit",
+          "description": "Area of the plot. State the unit."
         },
 
         "shape": {
           "type": "string",
           "enum": ["square", "rectangle", "circle", "irregular", "point", "transect"],
-          "description": "Physical shape of the sampled plot, independent of the GeoJSON geometry type. For example, a square plot may be represented only by a Point centroid. A point plot has no sampled area and must not have areaSqm."
+          "description": "Physical shape of the sampled plot, independent of the GeoJSON geometry type. For example, a square plot may be represented only by a Point centroid. A point plot has no sampled area and must not have area."
         },
 
-        "orientation_degrees": {
-          "description": "Bearing in degrees (0–360, clockwise from north) of the long axis of a rectangular or transect plot.",
+        "orientation": {
+          "description": "Bearing of the long axis of a rectangular or transect plot, clockwise from north. State the angular unit.",
           "allOf": [
             { "$ref": "#/definitions/numericObservedValue" },
             {
               "type": "object",
+              "required": ["unit"],
               "properties": {
                 "value": { "type": "number", "minimum": 0, "exclusiveMaximum": 360 }
               }
@@ -380,14 +392,14 @@
           ]
         },
 
-        "elevation_m": {
-          "$ref": "#/definitions/numericObservedValue",
-          "description": "Preferred elevation of the plot in metres. Use locationRecords when preserving multiple determinations or their provenance."
+        "elevation": {
+          "$ref": "#/definitions/numericObservedValueWithUnit",
+          "description": "Preferred elevation of the plot. State the unit. Use locationRecords when preserving multiple determinations or their provenance."
         },
 
         "locationRecords": {
           "type": "array",
-          "description": "Alternative or historical determinations of the plot coordinates or elevation. The top-level geometry and elevation_m remain the preferred values for routine use.",
+          "description": "Alternative or historical determinations of the plot coordinates or elevation. The top-level geometry and elevation remain the preferred values for routine use.",
           "items": { "$ref": "#/definitions/locationRecord" }
         },
 
@@ -429,24 +441,24 @@
           "$ref": "#/definitions/plotOrigin"
         },
 
-        "radius_m": {
-          "$ref": "#/definitions/positiveObservedValue",
-          "description": "Radius of a circular plot in metres."
+        "radius": {
+          "$ref": "#/definitions/positiveObservedValueWithUnit",
+          "description": "Radius of a circular plot. State the unit."
         },
 
-        "width_m": {
-          "$ref": "#/definitions/positiveObservedValue",
-          "description": "Width of a rectangular or square plot in metres."
+        "width": {
+          "$ref": "#/definitions/positiveObservedValueWithUnit",
+          "description": "Width of a rectangular or square plot. State the unit."
         },
 
-        "length_m": {
-          "$ref": "#/definitions/positiveObservedValue",
-          "description": "Length of a rectangular or linear plot in metres."
+        "length": {
+          "$ref": "#/definitions/positiveObservedValueWithUnit",
+          "description": "Length of a rectangular or linear plot. State the unit."
         },
 
-        "transectBandWidth_m": {
-          "$ref": "#/definitions/positiveObservedValue",
-          "description": "Distance in metres from the transect axis to the edge of the sampled band."
+        "transectBandWidth": {
+          "$ref": "#/definitions/positiveObservedValueWithUnit",
+          "description": "Distance from the transect axis to the edge of the sampled band. State the unit."
         },
 
         "permanentPlot": {
@@ -494,7 +506,7 @@
             "properties": {
               "shape": { "const": "point" }
             },
-            "required": ["shape", "areaSqm"]
+            "required": ["shape", "area"]
           }
         }
       ]
@@ -517,8 +529,8 @@
           "type": "string",
           "description": "CRS of geometry; omit for EPSG:4326."
         },
-        "locationAccuracy_m": { "$ref": "#/definitions/nonNegativeObservedValue" },
-        "elevation_m": { "$ref": "#/definitions/numericObservedValue" },
+        "locationAccuracy": { "$ref": "#/definitions/nonNegativeObservedValueWithUnit" },
+        "elevation": { "$ref": "#/definitions/numericObservedValueWithUnit" },
         "verticalDatum": {
           "type": "string",
           "description": "Vertical reference for elevation, e.g. mean sea level, ellipsoid, or a named national datum."
@@ -548,7 +560,7 @@
       },
       "anyOf": [
         { "required": ["geometry"] },
-        { "required": ["elevation_m"] }
+        { "required": ["elevation"] }
       ]
     },
 
@@ -578,8 +590,8 @@
       "description": "Location of an aquatic plot relative to the water surface and shore at a stated time.",
       "additionalProperties": false,
       "properties": {
-        "depth_m": { "$ref": "#/definitions/nonNegativeObservedValue" },
-        "shoreDistance_m": { "$ref": "#/definitions/nonNegativeObservedValue" },
+        "depth": { "$ref": "#/definitions/nonNegativeObservedValueWithUnit" },
+        "shoreDistance": { "$ref": "#/definitions/nonNegativeObservedValueWithUnit" },
         "position": {
           "type": "string",
           "description": "Position represented by the depth, e.g. plot centre, shallowest point, or average."
@@ -593,8 +605,8 @@
         "extensions": { "$ref": "#/definitions/extensions" }
       },
       "anyOf": [
-        { "required": ["depth_m"] },
-        { "required": ["shoreDistance_m"] }
+        { "required": ["depth"] },
+        { "required": ["shoreDistance"] }
       ]
     },
 
@@ -649,13 +661,14 @@
     "relativePlotPosition": {
       "type": "object",
       "description": "Cartesian offset from the related plot's origin, with axes defined by the related plot's orientation.",
-      "required": ["x_m", "y_m"],
+      "required": ["x", "y", "unit"],
       "additionalProperties": false,
       "properties": {
-        "x_m": { "type": "number" },
-        "y_m": { "type": "number" },
-        "z_m": { "type": "number" },
-        "accuracy_m": { "type": "number", "minimum": 0 },
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "z": { "type": "number" },
+        "accuracy": { "type": "number", "minimum": 0 },
+        "unit": { "type": "string", "minLength": 1 },
         "notes": { "$ref": "#/definitions/notes" }
       }
     },
@@ -679,13 +692,15 @@
           "minimum": 1,
           "description": "Position in the ordered sequence of strata; 1 = tallest."
         },
-        "heightRange_m": {
+        "heightRange": {
           "type": "object",
-          "description": "Definitional height limits in metres. These are vocabulary boundaries, not heights measured during the survey.",
+          "description": "Definitional height limits. These are vocabulary boundaries, not heights measured during the survey.",
+          "required": ["unit"],
           "additionalProperties": false,
           "properties": {
             "minimum": { "type": "number", "minimum": 0 },
-            "maximum": { "type": "number", "minimum": 0 }
+            "maximum": { "type": "number", "minimum": 0 },
+            "unit": { "type": "string", "minLength": 1 }
           }
         },
         "method": {
@@ -706,17 +721,21 @@
           "description": "Short code referenced by other records in this plot observation, e.g. 'T1', 'S', 'H', or 'M'."
         },
         "definition": { "$ref": "#/definitions/stratumDefinition" },
-        "heightMin_m": {
-          "$ref": "#/definitions/nonNegativeObservedValue",
-          "description": "Lowest observed height of this layer in metres."
+        "heightMin": {
+          "$ref": "#/definitions/nonNegativeObservedValueWithUnit",
+          "description": "Lowest observed height of this layer. State the unit."
         },
-        "heightMax_m": {
-          "$ref": "#/definitions/nonNegativeObservedValue",
-          "description": "Highest observed height of this layer in metres."
+        "heightMax": {
+          "$ref": "#/definitions/nonNegativeObservedValueWithUnit",
+          "description": "Highest observed height of this layer. State the unit."
+        },
+        "coverValue": {
+          "$ref": "#/definitions/coverObservedValue",
+          "description": "Total cover or abundance of this layer as recorded in the field. Use a numeric value with unit % for direct percentage cover, or a string value with coverScale for a coded scale. This is distinct from the cover of individual taxa within the layer."
         },
         "attributes": {
           "type": "array",
-          "description": "Other measured properties of this layer, e.g. cover, leaf area index, or stem count.",
+          "description": "Other measured properties of this layer beyond cover, e.g. leaf area index or stem count.",
           "items": { "$ref": "#/definitions/attribute" }
         },
         "attributeGroups": { "$ref": "#/definitions/attributeGroups" },
@@ -729,36 +748,12 @@
     "taxonObservation": {
       "type": "object",
       "description": "Record of one taxon observed in one stratum with a cover or abundance value. The same taxon may appear multiple times in a plot observation if it occupies more than one stratum.",
-      "required": ["taxonName"],
+      "required": ["taxonDeterminations"],
       "additionalProperties": false,
       "properties": {
 
-        "taxonName": {
-          "type": "string",
-          "description": "Taxon label as recorded by the observer. Usually a scientific name, but may be a morphospecies or field name. Use the label actually applied in the field without attempting harmonisation."
-        },
-
-        "nameType": { "$ref": "#/definitions/taxonNameType" },
-
-        "taxonID": {
-          "$ref": "#/definitions/identifier",
-          "description": "URI or identifier for the taxon concept applied when this observation was recorded, e.g. a GBIF species key URL, WFO identifier, or Euro+Med URI. Record later identifications or nomenclatural revisions in taxonDeterminations."
-        },
-
-        "taxonConceptReference": {
-          "type": "string",
-          "description": "The taxon concept applied by the observer, e.g. 'Flora Europaea vol. 1', or a URI to a specific treatment. Distinguishes which circumscription of the name was intended."
-        },
-
-        "originalIdentification": {
-          "$ref": "#/definitions/originalIdentification",
-          "description": "Provenance for the taxonName originally recorded by the observer."
-        },
-
         "taxonDeterminations": {
-          "type": "array",
-          "description": "Later identifications or nomenclatural revisions of this occurrence, ordered from oldest to newest. Each entry is self-contained; no identifier links are required. Set preferred=true on the determination currently recommended for use.",
-          "items": { "$ref": "#/definitions/taxonDetermination" }
+          "$ref": "#/definitions/taxonDeterminations"
         },
 
         "stratumID": {
@@ -767,13 +762,8 @@
         },
 
         "coverValue": {
-          "$ref": "#/definitions/observedValue",
+          "$ref": "#/definitions/coverObservedValue",
           "description": "Cover or abundance value as recorded in the field. Use a string value for ordinal codes such as 'r', '+', '1', '2a', '2b', '3', '4', or '5' (Braun-Blanquet), and a numeric value for percentages or counts."
-        },
-
-        "coverScale": {
-          "type": "string",
-          "description": "Name of the cover or abundance scale used for this record. Should match a scaleName defined in dataset.coverScales when a formal definition is provided. Examples: 'percentage', 'Braun-Blanquet', 'Domin'."
         },
 
         "attributes": {
@@ -794,7 +784,7 @@
     "organismObservation": {
       "type": "object",
       "description": "Dated observation of a single, individually identifiable organism such as a numbered tree in a permanent plot. Repeat organismID in later plot observations to build a time series without a separate individual-organism registry.",
-      "required": ["taxonName"],
+      "required": ["taxonDeterminations"],
       "additionalProperties": false,
       "properties": {
 
@@ -820,32 +810,8 @@
           "items": { "$ref": "#/definitions/organismRelationship" }
         },
 
-        "taxonName": {
-          "type": "string",
-          "description": "Taxon label originally recorded for this individual. Usually a scientific name, but may be a morphospecies or field name."
-        },
-
-        "nameType": { "$ref": "#/definitions/taxonNameType" },
-
-        "taxonID": {
-          "$ref": "#/definitions/identifier",
-          "description": "URI or identifier for the taxon concept applied when this individual was recorded. Record later identifications or nomenclatural revisions in taxonDeterminations."
-        },
-
-        "taxonConceptReference": {
-          "type": "string",
-          "description": "The taxon concept applied by the observer, e.g. 'Flora Europaea vol. 1', or a URI to a specific treatment. Distinguishes which circumscription of the name was intended."
-        },
-
-        "originalIdentification": {
-          "$ref": "#/definitions/originalIdentification",
-          "description": "Provenance for the taxonName originally recorded for this individual."
-        },
-
         "taxonDeterminations": {
-          "type": "array",
-          "description": "Later identifications or nomenclatural revisions of this individual, ordered from oldest to newest. Each entry is self-contained; no identifier links are required. Set preferred=true on the determination currently recommended for use.",
-          "items": { "$ref": "#/definitions/taxonDetermination" }
+          "$ref": "#/definitions/taxonDeterminations"
         },
 
         "stratumID": {
@@ -866,32 +832,33 @@
               "type": "string",
               "description": "EPSG code or Proj string of the CRS for the absolute geometry, if not EPSG:4326. E.g. 'EPSG:28992' (Dutch RD New), 'EPSG:32632' (UTM zone 32N)."
             },
-            "locationAccuracy_m": {
-              "$ref": "#/definitions/nonNegativeObservedValue",
-              "description": "Estimated positional accuracy in metres."
+            "locationAccuracy": {
+              "$ref": "#/definitions/nonNegativeObservedValueWithUnit",
+              "description": "Estimated positional accuracy. State the unit."
             },
-            "plotX_m": {
-              "$ref": "#/definitions/numericObservedValue",
-              "description": "Cartesian X offset in metres from the plot origin, typically a south-west corner or marked reference point."
+            "plotX": {
+              "$ref": "#/definitions/numericObservedValueWithUnit",
+              "description": "Cartesian X offset from the plot origin, typically a south-west corner or marked reference point. State the unit."
             },
-            "plotY_m": {
-              "$ref": "#/definitions/numericObservedValue",
-              "description": "Cartesian Y offset in metres from the plot origin."
+            "plotY": {
+              "$ref": "#/definitions/numericObservedValueWithUnit",
+              "description": "Cartesian Y offset from the plot origin. State the unit."
             },
-            "transectPosition_m": {
-              "$ref": "#/definitions/nonNegativeObservedValue",
-              "description": "Distance along the transect axis in metres from the transect start, for one-dimensional belt transect surveys."
+            "transectPosition": {
+              "$ref": "#/definitions/nonNegativeObservedValueWithUnit",
+              "description": "Distance along the transect axis from the transect start, for one-dimensional belt transect surveys. State the unit."
             },
-            "distanceFromOrigin_m": {
-              "$ref": "#/definitions/nonNegativeObservedValue",
-              "description": "Radial distance in metres from a defined reference point. Use with bearingFromOrigin_degrees for polar coordinates, or with quarter for Point-Centred Quarter Method."
+            "distanceFromOrigin": {
+              "$ref": "#/definitions/nonNegativeObservedValueWithUnit",
+              "description": "Radial distance from a defined reference point. State the unit. Use with bearingFromOrigin for polar coordinates, or with quarter for Point-Centred Quarter Method."
             },
-            "bearingFromOrigin_degrees": {
-              "description": "Bearing in degrees clockwise from north to this individual, measured from the plot origin (polar coordinates). Use with distanceFromOrigin_m.",
+            "bearingFromOrigin": {
+              "description": "Bearing clockwise from north to this individual, measured from the plot origin (polar coordinates). State the angular unit. Use with distanceFromOrigin.",
               "allOf": [
                 { "$ref": "#/definitions/numericObservedValue" },
                 {
                   "type": "object",
+                  "required": ["unit"],
                   "properties": {
                     "value": { "type": "number", "minimum": 0, "exclusiveMaximum": 360 }
                   }
@@ -901,7 +868,7 @@
             "quarter": {
               "type": "string",
               "enum": ["NE", "NW", "SE", "SW"],
-              "description": "Quarter in which this individual was found, for Point-Centred Quarter Method (PCQM). The area around each sample point is divided into four 90° quadrants: NE, NW, SE, SW. Use with distanceFromOrigin_m for the distance to the nearest individual in that quarter."
+              "description": "Quarter in which this individual was found, for Point-Centred Quarter Method (PCQM). The area around each sample point is divided into four 90° quadrants: NE, NW, SE, SW. Use with distanceFromOrigin for the distance to the nearest individual in that quarter."
             },
             "notes": { "$ref": "#/definitions/notes" },
             "attributes": {
@@ -959,33 +926,28 @@
       "description": "Nature of the taxonName label. Omit when it is an ordinary scientific name."
     },
 
-    "originalIdentification": {
+    "taxonDeterminations": {
       "type": "object",
-      "description": "Provenance for the taxon name originally recorded for an occurrence. The name and concept remain on the containing observation so simple records do not need this object.",
+      "description": "Original and subsequent taxonomic or nomenclatural determinations of an occurrence. All determinations use the same self-contained structure.",
+      "required": ["originalDetermination"],
       "additionalProperties": false,
       "properties": {
-        "identifiedBy": {
+        "originalDetermination": {
+          "$ref": "#/definitions/taxonDetermination",
+          "description": "Determination attached to the occurrence when it was originally recorded."
+        },
+        "subsequentDeterminations": {
           "type": "array",
-          "description": "People or organizations responsible for the original identification.",
-          "items": { "$ref": "#/definitions/party" }
-        },
-        "identificationDate": {
-          "type": "string",
-          "format": "date",
-          "description": "Date of the original identification when different from, or more specific than, the observation date."
-        },
-        "vouchers": {
-          "type": "array",
-          "description": "Voucher specimen identifiers or herbarium accession numbers supporting the identification.",
-          "items": { "type": "string" }
-        },
-        "notes": { "$ref": "#/definitions/notes" }
+          "description": "Later identifications or nomenclatural revisions, ordered from oldest to newest.",
+          "minItems": 1,
+          "items": { "$ref": "#/definitions/taxonDetermination" }
+        }
       }
     },
 
     "taxonDetermination": {
       "type": "object",
-      "description": "A later identification or nomenclatural interpretation of an observed taxon. Each determination contains its own name, provenance, and assessment so it can be understood without following ID references.",
+      "description": "An original or later identification or nomenclatural interpretation of an observed taxon. Each determination contains its own name, references, provenance, and assessment.",
       "required": ["taxonName"],
       "additionalProperties": false,
       "properties": {
@@ -999,8 +961,12 @@
           "description": "URI or identifier resolving to the taxon concept assigned by this determination."
         },
         "taxonConceptReference": {
-          "type": "string",
-          "description": "Reference work, checklist, taxonomic treatment, or URI defining the concept used in this determination."
+          "$ref": "#/definitions/literatureCitation",
+          "description": "Taxonomic treatment defining the circumscription used in this determination. Do not use a nomenclatural checklist here unless it also defines that circumscription."
+        },
+        "nameReference": {
+          "$ref": "#/definitions/literatureCitation",
+          "description": "Nomenclatural source or reference list supporting the determined name's spelling, authorship, synonymy, or accepted-name status without implying that it defines a taxon concept."
         },
         "determinationDate": {
           "type": "string",
@@ -1011,6 +977,11 @@
           "type": "array",
           "description": "People or organizations responsible for this determination.",
           "items": { "$ref": "#/definitions/party" }
+        },
+        "vouchers": {
+          "type": "array",
+          "description": "Voucher specimen identifiers or herbarium accession numbers supporting this determination.",
+          "items": { "type": "string" }
         },
         "fit": {
           "type": "string",
@@ -1035,7 +1006,7 @@
 
     "surfaceTypeDefinition": {
       "type": "object",
-      "description": "Definition of a non-living or abiotic surface category, independent of its observed cover.",
+      "description": "Definition of an aggregate living or non-living surface category, independent of its observed cover.",
       "required": ["name"],
       "additionalProperties": false,
       "properties": {
@@ -1056,24 +1027,16 @@
 
     "surfaceObservation": {
       "type": "object",
-      "description": "Cover observation for a non-living or abiotic surface element. Supplements taxonObservations to allow full cover accounting.",
+      "description": "Cover observation for an aggregate living or non-living surface category. Supplements taxonObservations to allow full cover accounting.",
       "required": ["surfaceType"],
       "additionalProperties": false,
       "properties": {
         "surfaceType": {
           "$ref": "#/definitions/surfaceTypeDefinition"
         },
-        "coverValuePercentage": {
-          "description": "Recorded surface cover percentage.",
-          "allOf": [
-            { "$ref": "#/definitions/numericObservedValue" },
-            {
-              "type": "object",
-              "properties": {
-                "value": { "type": "number", "minimum": 0, "maximum": 100 }
-              }
-            }
-          ]
+        "coverValue": {
+          "$ref": "#/definitions/coverObservedValue",
+          "description": "Recorded surface cover or abundance. Use a numeric value with unit % for direct percentage cover, or a string value with coverScale for a coded scale."
         },
         "attributes": {
           "type": "array",
@@ -1184,12 +1147,13 @@
           "description": "Compass direction the slope faces. Use cardinal/intercardinal notation such as 'N', 'NE', or 'NNE'."
         },
 
-        "aspectDegrees": {
-          "description": "Slope aspect as a bearing in degrees clockwise from north. Use as an alternative to or alongside aspectCategorical.",
+        "aspect": {
+          "description": "Slope aspect as a bearing clockwise from north. State the angular unit. Use as an alternative to or alongside aspectCategorical.",
           "allOf": [
             { "$ref": "#/definitions/numericObservedValue" },
             {
               "type": "object",
+              "required": ["unit"],
               "properties": {
                 "value": { "type": "number", "minimum": 0, "exclusiveMaximum": 360 }
               }
@@ -1197,12 +1161,13 @@
           ]
         },
 
-        "slopeDegrees": {
-          "description": "Slope inclination in degrees.",
+        "slope": {
+          "description": "Slope inclination. State the angular unit.",
           "allOf": [
             { "$ref": "#/definitions/numericObservedValue" },
             {
               "type": "object",
+              "required": ["unit"],
               "properties": {
                 "value": { "type": "number", "minimum": 0, "maximum": 90 }
               }
@@ -1253,9 +1218,9 @@
           "description": "Ordinal moisture regime, e.g. 'dry', 'fresh', 'moist', or 'wet'."
         },
 
-        "soilDepth_cm": {
-          "$ref": "#/definitions/nonNegativeObservedValue",
-          "description": "Depth to bedrock or an impermeable layer in centimetres."
+        "soilDepth": {
+          "$ref": "#/definitions/nonNegativeObservedValueWithUnit",
+          "description": "Depth to bedrock or an impermeable layer. State the unit."
         },
 
         "humusType": {
@@ -1384,7 +1349,7 @@
         },
         "method": {
           "type": "string",
-          "description": "Instrument, procedure, classification system, or assessment method used to obtain the value."
+          "description": "Instrument, procedure, or assessment method used to obtain the value, e.g. 'visual estimate of projected cover'. For a coded cover value, record the cover scale separately in the coverValue's coverScale property rather than using its name as the method."
         },
         "reference": { "$ref": "#/definitions/literatureCitation" },
         "observationDate": {
@@ -1406,6 +1371,79 @@
           "not": {
             "type": "object",
             "required": ["attributeType"]
+          }
+        }
+      ]
+    },
+
+    "coverObservedValue": {
+      "type": "object",
+      "description": "A cover or abundance measurement. A coded string value carries its interpreting scale in the same object; a direct numeric percentage uses unit % and omits coverScale.",
+      "required": ["value"],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "description": "Recorded cover or abundance value. Use a string for a coded scale value and a number for direct percentages or counts.",
+          "oneOf": [
+            { "type": "number" },
+            { "type": "string" }
+          ]
+        },
+        "measurementScale": {
+          "type": "string",
+          "enum": ["nominal", "ordinal", "interval", "ratio"]
+        },
+        "unit": { "type": "string" },
+        "precision": { "type": "number", "exclusiveMinimum": 0 },
+        "accuracy": { "type": "number", "minimum": 0 },
+        "lowerValue": {
+          "oneOf": [
+            { "type": "number" },
+            { "type": "string" }
+          ]
+        },
+        "upperValue": {
+          "oneOf": [
+            { "type": "number" },
+            { "type": "string" }
+          ]
+        },
+        "method": {
+          "type": "string",
+          "description": "Instrument, procedure, or assessment method used to obtain the cover value, e.g. 'Visual estimate'."
+        },
+        "coverScale": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Name of the coded cover or abundance scale interpreting value. Should match a scaleName defined in the containing project's coverScales. Omit for direct numeric percentages represented with unit %."
+        },
+        "reference": { "$ref": "#/definitions/literatureCitation" },
+        "observationDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Date this value was recorded, if different from the plot observation date."
+        },
+        "samplingContext": { "$ref": "#/definitions/samplingContext" },
+        "notes": { "$ref": "#/definitions/notes" },
+        "extensions": { "$ref": "#/definitions/extensions" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "value": { "type": "number" } }
+          },
+          "then": { "required": ["unit"] }
+        },
+        {
+          "if": {
+            "properties": { "value": { "type": "string" } }
+          },
+          "then": { "required": ["coverScale"] }
+        },
+        {
+          "if": { "required": ["coverScale"] },
+          "then": {
+            "properties": { "value": { "type": "string" } }
           }
         }
       ]
@@ -1449,6 +1487,27 @@
       ]
     },
 
+    "numericObservedValueWithUnit": {
+      "allOf": [
+        { "$ref": "#/definitions/numericObservedValue" },
+        { "type": "object", "required": ["unit"] }
+      ]
+    },
+
+    "nonNegativeObservedValueWithUnit": {
+      "allOf": [
+        { "$ref": "#/definitions/nonNegativeObservedValue" },
+        { "type": "object", "required": ["unit"] }
+      ]
+    },
+
+    "positiveObservedValueWithUnit": {
+      "allOf": [
+        { "$ref": "#/definitions/positiveObservedValue" },
+        { "type": "object", "required": ["unit"] }
+      ]
+    },
+
     "categoricalObservedValue": {
       "allOf": [
         { "$ref": "#/definitions/observedValue" },
@@ -1468,8 +1527,13 @@
       "description": "Context defining where or in what medium a value was obtained, especially for soil and water measurements.",
       "additionalProperties": false,
       "properties": {
-        "depthMin_cm": { "type": "number", "minimum": 0 },
-        "depthMax_cm": { "type": "number", "minimum": 0 },
+        "depthMinimum": { "type": "number", "minimum": 0 },
+        "depthMaximum": { "type": "number", "minimum": 0 },
+        "unit": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Unit applying to depthMinimum and depthMaximum."
+        },
         "medium": {
           "type": "string",
           "description": "Preparation or suspension medium, e.g. 'H2O 1:2.5', 'CaCl2 0.01M 1:2.5', or 'KCl 1M 1:2.5'."
@@ -1478,6 +1542,10 @@
           "type": "string",
           "description": "Position represented by the value, e.g. 'plot centre', 'highest point', or 'plot origin'."
         }
+      },
+      "dependencies": {
+        "depthMinimum": ["unit"],
+        "depthMaximum": ["unit"]
       }
     },
 
@@ -1561,16 +1629,19 @@
 
     "coverScale": {
       "type": "object",
-      "description": "Definition of a named cover or abundance scale. Defines the mapping from ordinal field codes to percentage cover ranges, enabling quantitative conversion and cross-dataset comparison.",
+      "description": "Definition of a named coded cover or abundance scale. Defines the mapping from ordinal field codes to percentage cover ranges, enabling quantitative conversion and cross-dataset comparison.",
       "required": ["scaleName", "values"],
       "additionalProperties": false,
       "properties": {
         "scaleName": {
           "type": "string",
-          "description": "Canonical name of the scale, e.g. 'Braun-Blanquet', 'Domin', 'DAFOR', 'van der Maarel', 'Hult-Sernander-Du Rietz', 'percentage'."
+          "description": "Name used for this scale in the dataset, including a variant or edition qualifier when known, e.g. 'Braun-Blanquet (new)', 'Domin', 'DAFOR', 'van der Maarel', or 'Hult-Sernander-Du Rietz'."
         },
         "description": { "type": "string" },
-        "reference": { "$ref": "#/definitions/literatureCitation" },
+        "reference": {
+          "$ref": "#/definitions/literatureCitation",
+          "description": "Published source or other documentation defining this scale or variant. Recommended when known; omit when the exact source cannot be established, as may be the case for legacy data."
+        },
         "values": {
           "type": "array",
           "description": "Ordered list of scale values from lowest to highest abundance.",
@@ -1678,11 +1749,15 @@
 
     "project": {
       "type": "object",
-      "description": "Research or monitoring project this data was collected under.",
-      "required": ["name"],
+      "description": "Self-contained research or monitoring project, including its metadata, shared definitions, and plot observations.",
+      "required": ["projectName"],
       "additionalProperties": false,
       "properties": {
-        "name": { "type": "string" },
+        "projectName": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Name or title of the project."
+        },
         "projectID": {
           "$ref": "#/definitions/identifier",
           "description": "Unique identifier, e.g. a GBIF dataset key, DOI, or national database code."
@@ -1720,7 +1795,30 @@
           "items": { "$ref": "#/definitions/literatureCitation" }
         },
         "startYear":  { "type": "integer" },
-        "endYear":    { "type": "integer" }
+        "endYear":    { "type": "integer" },
+        "license": { "$ref": "#/definitions/license" },
+        "methods": {
+          "type": "array",
+          "description": "Survey methods shared by observations in this project. Methods applying to only one observation may instead be embedded there.",
+          "items": { "$ref": "#/definitions/method" }
+        },
+        "protocols": {
+          "type": "array",
+          "description": "Protocols grouping methods used in this project.",
+          "items": { "$ref": "#/definitions/protocol" }
+        },
+        "coverScales": {
+          "type": "array",
+          "description": "Definitions of coded cover or abundance scales used in this project. Referenced by name (coverScale) from taxonObservation or stratumObservation records. Include each named coded scale used by the project. Direct numeric percentages are self-describing through coverValue with unit % and do not need a coverScale definition.",
+          "items": { "$ref": "#/definitions/coverScale" }
+        },
+        "plotObservations": {
+          "type": "array",
+          "description": "Plot observation records belonging to this project. Repeat a complete observation in each project when it belongs to multiple projects, preserving the same stable plotObservationID when available.",
+          "items": { "$ref": "#/definitions/plotObservation" }
+        },
+        "notes": { "$ref": "#/definitions/notes" },
+        "extensions": { "$ref": "#/definitions/extensions" }
       }
     },
 
@@ -1812,7 +1910,7 @@
               "items": { "type": "number" },
               "minItems": 2,
               "maxItems": 3,
-              "description": "[longitude, latitude] or [longitude, latitude, elevation_m]."
+              "description": "[longitude, latitude] or [longitude, latitude, elevation]."
             }
           }
         },
@@ -1832,7 +1930,7 @@
                 "minItems": 2,
                 "maxItems": 3
               },
-              "description": "Ordered sequence of positions defining the transect or plot boundary line. Each position is [longitude, latitude] or [longitude, latitude, elevation_m]."
+              "description": "Ordered sequence of positions defining the transect or plot boundary line. Each position is [longitude, latitude] or [longitude, latitude, elevation]."
             }
           }
         },

@@ -1,0 +1,191 @@
+<?xml version='1.0' encoding='ISO-8859-1' standalone='yes' ?>
+<vegX xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dwg="http://rs.tdwg.org/dwc/geospatial/" xmlns:tcs="http://www.tdwg.org/schemas/tcs/1.01">
+  <methods>
+    <method id="customLayerSystem">
+      <name>stratified vegetation_Layers</name>
+      <description>Turboveg-style</description>
+      <subject>Classification of vegetation layers (strata, tiers)</subject>
+    </method>
+    <method id="method_maximum_height_of_layer_in_meter">
+      <name>Maximum height of layer in meters</name>
+      <description />
+      <subject>Maximum height of layer</subject>
+      <citationString />
+    </method>
+    <method id="method_percent_cover_of_species">
+      <name>Percent cover of species</name>
+      <description>Visual estimate</description>
+      <subject>Species cover</subject>
+      <citationString />
+    </method>
+    <method id="method_percent_cover_of_layer_stratum">
+      <name>Percent cover of layer (stratum)</name>
+      <description>Visual estimate</description>
+      <subject>Cover of layer (stratum)</subject>
+      <citationString />
+    </method>
+  </methods>
+  <attributes>
+    <attribute id="maximum_height_of_layer_in_meter">
+      <quantitative>
+        <methodID>method_maximum_height_of_layer_in_meter</methodID>
+        <unit>m</unit>
+      </quantitative>
+    </attribute>
+    <attribute id="percent_cover_of_species">
+      <quantitative>
+        <methodID>method_percent_cover_of_species</methodID>
+        <unit>%</unit>
+      </quantitative>
+    </attribute>
+    <attribute id="percent_cover_of_layer_stratum">
+      <quantitative>
+        <methodID>method_percent_cover_of_layer_stratum</methodID>
+        <unit>%</unit>
+      </quantitative>
+    </attribute>
+  </attributes>
+  <strata>
+    <stratum id="stratum_1">
+      <stratumName>B&#228;ume</stratumName>
+      <methodID>customLayerSystem</methodID>
+      <definition>Phanerophyten und Lianen mit mehr als 5 m H&#246;he</definition>
+      <order>1</order>
+      <lowerLimit>5</lowerLimit>
+    </stratum>
+    <stratum id="stratum_5">
+      <stratumName>Str&#228;ucher</stratumName>
+      <methodID>customLayerSystem</methodID>
+      <definition>Phanerophyten und Lianen zwischen 0,5 und 5 m H&#246;he</definition>
+      <order>2</order>
+      <upperLimit>5</upperLimit>
+      <lowerLimit>0.5</lowerLimit>
+    </stratum>
+  </strata>
+  <organismNames>
+    <organismName id="organismName_182" taxonName="true">Quercus robur</organismName>
+    <organismName id="organismName_183" taxonName="true">Quercus robur</organismName>
+    <organismName id="organismName_184" taxonName="true">Fagus sylvatica</organismName>
+    <organismName id="organismName_185" taxonName="true">Fagus sylvatica</organismName>
+  </organismNames>
+  <organismIdentities>
+    <organismIdentity id="organismIdentitiy_182">
+      <originalOrganismNameID>organismName_182</originalOrganismNameID>
+      <originalIdentificationConcept>
+        <taxonConceptID />
+      </originalIdentificationConcept>
+    </organismIdentity>
+    <organismIdentity id="organismIdentitiy_183">
+      <originalOrganismNameID>organismName_183</originalOrganismNameID>
+      <originalIdentificationConcept>
+        <taxonConceptID />
+      </originalIdentificationConcept>
+    </organismIdentity>
+    <organismIdentity id="organismIdentitiy_184">
+      <originalOrganismNameID>organismName_184</originalOrganismNameID>
+      <originalIdentificationConcept>
+        <taxonConceptID />
+      </originalIdentificationConcept>
+    </organismIdentity>
+    <organismIdentity id="organismIdentitiy_185">
+      <originalOrganismNameID>organismName_185</originalOrganismNameID>
+      <originalIdentificationConcept>
+        <taxonConceptID />
+      </originalIdentificationConcept>
+    </organismIdentity>
+  </organismIdentities>
+  <projects>
+    <project id="13">
+      <title>stratified vegetation</title>
+    </project>
+  </projects>
+  <plots>
+    <plot id="35">
+      <plotName>1</plotName>
+    </plot>
+  </plots>
+  <plotObservations>
+    <plotObservation id="plotObservation_35">
+      <plotID>35</plotID>
+      <obsStartDate>2026-08-06</obsStartDate>
+      <plotObservationUniqueIdentifier>1</plotObservationUniqueIdentifier>
+      <projectID>13</projectID>
+    </plotObservation>
+  </plotObservations>
+  <aggregateOrganismObservations>
+    <aggregateOrganismObservation id="aggregateObservation_182">
+      <plotObservationID>plotObservation_35</plotObservationID>
+      <organismIdentityID>organismIdentitiy_182</organismIdentityID>
+      <aggregateOrganismMeasurement>
+        <value>50</value>
+        <attributeID>percent_cover_of_species</attributeID>
+      </aggregateOrganismMeasurement>
+      <stratumObservationID>stratumObservation_91</stratumObservationID>
+    </aggregateOrganismObservation>
+    <aggregateOrganismObservation id="aggregateObservation_183">
+      <plotObservationID>plotObservation_35</plotObservationID>
+      <organismIdentityID>organismIdentitiy_183</organismIdentityID>
+      <aggregateOrganismMeasurement>
+        <value>6</value>
+        <attributeID>percent_cover_of_species</attributeID>
+      </aggregateOrganismMeasurement>
+      <stratumObservationID>stratumObservation_92</stratumObservationID>
+    </aggregateOrganismObservation>
+    <aggregateOrganismObservation id="aggregateObservation_184">
+      <plotObservationID>plotObservation_35</plotObservationID>
+      <organismIdentityID>organismIdentitiy_184</organismIdentityID>
+      <aggregateOrganismMeasurement>
+        <value>41</value>
+        <attributeID>percent_cover_of_species</attributeID>
+      </aggregateOrganismMeasurement>
+      <stratumObservationID>stratumObservation_91</stratumObservationID>
+    </aggregateOrganismObservation>
+    <aggregateOrganismObservation id="aggregateObservation_185">
+      <plotObservationID>plotObservation_35</plotObservationID>
+      <organismIdentityID>organismIdentitiy_185</organismIdentityID>
+      <aggregateOrganismMeasurement>
+        <value>5</value>
+        <attributeID>percent_cover_of_species</attributeID>
+      </aggregateOrganismMeasurement>
+      <stratumObservationID>stratumObservation_92</stratumObservationID>
+    </aggregateOrganismObservation>
+  </aggregateOrganismObservations>
+  <stratumObservations>
+    <stratumObservation id="stratumObservation_91">
+      <stratumID>stratum_1</stratumID>
+      <plotObservationID>plotObservation_35</plotObservationID>
+      <upperLimitMeasurement>
+        <value>49</value>
+        <attributeID>maximum_height_of_layer_in_meter</attributeID>
+      </upperLimitMeasurement>
+      <stratumMeasurement>
+        <value>91</value>
+        <attributeID>percent_cover_of_layer_stratum</attributeID>
+      </stratumMeasurement>
+    </stratumObservation>
+    <stratumObservation id="stratumObservation_92">
+      <stratumID>stratum_5</stratumID>
+      <plotObservationID>plotObservation_35</plotObservationID>
+      <upperLimitMeasurement>
+        <value>5</value>
+        <attributeID>maximum_height_of_layer_in_meter</attributeID>
+      </upperLimitMeasurement>
+      <stratumMeasurement>
+        <value>11</value>
+        <attributeID>percent_cover_of_layer_stratum</attributeID>
+      </stratumMeasurement>
+    </stratumObservation>
+  </stratumObservations>
+  <note>
+    <text>Data collection and export were done using Vegapp for Android.</text>
+    <date>2026-08-06</date>
+  </note>
+  <note>
+    <text>Species reference list used while exporting this data (not necessarily while creating this data): Ge
+rmanSL v.1.5.6. This reference list is based on GermanSL, Taxonomische Referenzliste f&#252;r Botanische 
+Funddatenbanken in Deutschland, published by F. Jansen, University of Rostock. Please cite it if you
+ used the list: Jansen, F., Dengler, J. (2008): GermanSL &#8211; Eine universelle taxonomische Referenzlis
+te f&#252;r Vegetationsdatenbanken in Deutschland. Tuexenia 28: 239-253</text>
+    <date>2026-08-06</date>
+  </note>
+</vegX>

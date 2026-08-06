@@ -1,0 +1,66 @@
+{
+  "vegxVersion": "3.0",
+  "dataset": {
+    "projects": [
+      {
+        "projectName": "taxonomic concepts",
+        "plotObservations": [
+          {
+            "plot": {
+              "plotName": "1"
+            },
+            "obsStartDate": "2026-08-06",
+            "taxonObservations": [
+              {
+                "taxonDeterminations": {
+                  "originalDetermination": {
+                    "taxonName": "Quercus petraea",
+                    "taxonConceptReference": {
+                      "citationString": "Tutin, T. G. et al. (eds.) (1964-1980): Flora Europaea, Vols. 1-5. Cambridge University Press."
+                    }
+                  },
+                  "subsequentDeterminations": [
+                    {
+                    "taxonName": "Quercus petraea (Matt.) Liebl.",
+                    "nameReference": {
+                      "citationString": "Jansen, F. & Dengler, J. (2008): GermanSL - Eine universelle taxonomische Referenzliste fuer Vegetationsdatenbanken in Deutschland. Tuexenia 28: 239-253."
+                    },
+                    "determinationDate": "2026-08-06",
+                    "preferred": true,
+                    "notes": [
+                      {
+                        "text": "Authored name retained as the preferred nomenclatural label.",
+                        "date": "2026-08-06"
+                      }
+                    ]
+                    }
+                  ]
+                }
+              },
+              {
+                "taxonDeterminations": {
+                  "originalDetermination": {
+                    "taxonName": "Fagus sylvatica",
+                    "taxonConceptReference": {
+                      "citationString": "Flora europaea"
+                    }
+                  }
+                }
+              },
+              {
+                "taxonDeterminations": {
+                  "originalDetermination": {
+                    "taxonName": "Urtica dioica",
+                    "taxonConceptReference": {
+                      "citationString": "Rothmaler"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

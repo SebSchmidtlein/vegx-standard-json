@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='ISO-8859-1' standalone='yes' ?>
+<vegX>
+  <projects>
+    <project id="8">
+      <title>minimum releve</title>
+    </project>
+  </projects>
+  <plots>
+    <plot id="25">
+      <plotName>no. 1</plotName>
+    </plot>
+  </plots>
+  <plotObservations>
+    <plotObservation id="plotObservation_25">
+      <plotID>25</plotID>
+      <obsStartDate>2026-08-06</obsStartDate>
+      <projectID>8</projectID>
+    </plotObservation>
+  </plotObservations>
+</vegX>

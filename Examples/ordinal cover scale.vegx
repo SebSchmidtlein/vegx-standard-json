@@ -1,0 +1,168 @@
+<?xml version='1.0' encoding='ISO-8859-1' standalone='yes' ?>
+<vegX xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dwg="http://rs.tdwg.org/dwc/geospatial/" xmlns:tcs="http://www.tdwg.org/schemas/tcs/1.01">
+  <methods>
+    <method id="customLayerSystem">
+      <name>Ordinal cover scale_Layers</name>
+      <description>No vertical differentiation</description>
+      <subject>Classification of vegetation layers (strata, tiers)</subject>
+    </method>
+    <method id="method_coverscale">
+      <name>Braun/Blanquet (new)</name>
+      <description>Visual estimate</description>
+      <subject>Cover scale</subject>
+      <citationString />
+    </method>
+  </methods>
+  <attributes>
+    <attribute id="attribute_coverscale_r">
+      <ordinal>
+        <methodID>method_coverscale</methodID>
+        <code>r</code>
+      </ordinal>
+    </attribute>
+    <attribute id="attribute_coverscale_+">
+      <ordinal>
+        <methodID>method_coverscale</methodID>
+        <code>+</code>
+      </ordinal>
+    </attribute>
+    <attribute id="attribute_coverscale_1">
+      <ordinal>
+        <methodID>method_coverscale</methodID>
+        <code>1</code>
+      </ordinal>
+    </attribute>
+    <attribute id="attribute_coverscale_2m">
+      <ordinal>
+        <methodID>method_coverscale</methodID>
+        <code>2m</code>
+      </ordinal>
+    </attribute>
+    <attribute id="attribute_coverscale_2a">
+      <ordinal>
+        <methodID>method_coverscale</methodID>
+        <code>2a</code>
+      </ordinal>
+    </attribute>
+    <attribute id="attribute_coverscale_2b">
+      <ordinal>
+        <methodID>method_coverscale</methodID>
+        <code>2b</code>
+      </ordinal>
+    </attribute>
+    <attribute id="attribute_coverscale_3">
+      <ordinal>
+        <methodID>method_coverscale</methodID>
+        <code>3</code>
+      </ordinal>
+    </attribute>
+    <attribute id="attribute_coverscale_4">
+      <ordinal>
+        <methodID>method_coverscale</methodID>
+        <code>4</code>
+      </ordinal>
+    </attribute>
+    <attribute id="attribute_coverscale_5">
+      <ordinal>
+        <methodID>method_coverscale</methodID>
+        <code>5</code>
+      </ordinal>
+    </attribute>
+    <attribute id="attribute_coverscale_00">
+      <ordinal>
+        <methodID>method_coverscale</methodID>
+        <code>NA</code>
+      </ordinal>
+    </attribute>
+  </attributes>
+  <strata>
+    <stratum id="stratum_1">
+      <stratumName>na</stratumName>
+      <methodID>customLayerSystem</methodID>
+      <definition />
+      <order>1</order>
+      <lowerLimit>0</lowerLimit>
+    </stratum>
+  </strata>
+  <organismNames>
+    <organismName id="organismName_179" taxonName="true">Quercus robur</organismName>
+    <organismName id="organismName_180" taxonName="true">Urtica dioica</organismName>
+    <organismName id="organismName_181" taxonName="true">Hylocomium splendens</organismName>
+  </organismNames>
+  <organismIdentities>
+    <organismIdentity id="organismIdentitiy_179">
+      <originalOrganismNameID>organismName_179</originalOrganismNameID>
+      <originalIdentificationConcept>
+        <taxonConceptID />
+      </originalIdentificationConcept>
+    </organismIdentity>
+    <organismIdentity id="organismIdentitiy_180">
+      <originalOrganismNameID>organismName_180</originalOrganismNameID>
+      <originalIdentificationConcept>
+        <taxonConceptID />
+      </originalIdentificationConcept>
+    </organismIdentity>
+    <organismIdentity id="organismIdentitiy_181">
+      <originalOrganismNameID>organismName_181</originalOrganismNameID>
+      <originalIdentificationConcept>
+        <taxonConceptID />
+      </originalIdentificationConcept>
+    </organismIdentity>
+  </organismIdentities>
+  <projects>
+    <project id="12">
+      <title>Ordinal cover scale</title>
+    </project>
+  </projects>
+  <plots>
+    <plot id="33">
+      <plotName>no. 1</plotName>
+    </plot>
+  </plots>
+  <plotObservations>
+    <plotObservation id="plotObservation_33">
+      <plotID>33</plotID>
+      <obsStartDate>2026-08-06</obsStartDate>
+      <plotObservationUniqueIdentifier>no. 1</plotObservationUniqueIdentifier>
+      <projectID>12</projectID>
+    </plotObservation>
+  </plotObservations>
+  <aggregateOrganismObservations>
+    <aggregateOrganismObservation id="aggregateObservation_179">
+      <plotObservationID>plotObservation_33</plotObservationID>
+      <organismIdentityID>organismIdentitiy_179</organismIdentityID>
+      <aggregateOrganismMeasurement>
+        <value>4</value>
+        <attributeID>attribute_coverscale_4</attributeID>
+      </aggregateOrganismMeasurement>
+    </aggregateOrganismObservation>
+    <aggregateOrganismObservation id="aggregateObservation_180">
+      <plotObservationID>plotObservation_33</plotObservationID>
+      <organismIdentityID>organismIdentitiy_180</organismIdentityID>
+      <aggregateOrganismMeasurement>
+        <value>+</value>
+        <attributeID>attribute_coverscale_+</attributeID>
+      </aggregateOrganismMeasurement>
+    </aggregateOrganismObservation>
+    <aggregateOrganismObservation id="aggregateObservation_181">
+      <plotObservationID>plotObservation_33</plotObservationID>
+      <organismIdentityID>organismIdentitiy_181</organismIdentityID>
+      <aggregateOrganismMeasurement>
+        <value>2a</value>
+        <attributeID>attribute_coverscale_2a</attributeID>
+      </aggregateOrganismMeasurement>
+    </aggregateOrganismObservation>
+  </aggregateOrganismObservations>
+  <note>
+    <text>Data collection and export were done using Vegapp for Android.</text>
+    <date>2026-08-06</date>
+  </note>
+  <note>
+    <text>Species reference list used while exporting this data (not necessarily while creating this data): Ge
+rmanSL v.1.5.6. This reference list is based on GermanSL, Taxonomische Referenzliste f&#252;r Botanische 
+Funddatenbanken in Deutschland, published by F. Jansen, University of Rostock. Please cite it if you
+ used the list: Jansen, F., Dengler, J. (2008): GermanSL &#8211; Eine universelle taxonomische Referenzlis
+te f&#252;r Vegetationsdatenbanken in Deutschland. Tuexenia 28: 239-253</text>
+    <date>2026-08-06</date>
+  </note>
+</vegX>

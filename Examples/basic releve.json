@@ -1,0 +1,64 @@
+{
+  "vegxVersion": "3.0",
+  "dataset": {
+    "projects": [
+      {
+        "projectName": "basic releve",
+          "plotObservations": [
+          {
+            "plot": {
+              "plotName": "1"
+            },
+            "obsStartDate": "2026-08-06",
+            "observers": [
+              {
+                "name": "Max Mustermann"
+              }
+            ],
+            "taxonObservations": [
+              {
+                "taxonDeterminations": {
+                  "originalDetermination": {
+                    "taxonName": "Quercus robur"
+                  }
+                },
+                "coverValue": {
+                  "value": 22,
+                  "measurementScale": "ratio",
+                  "unit": "%",
+                  "method": "Visual estimate"
+                }
+              },
+              {
+                "taxonDeterminations": {
+                  "originalDetermination": {
+                    "taxonName": "Urtica dioica"
+                  }
+                },
+                "coverValue": {
+                  "value": 33,
+                  "measurementScale": "ratio",
+                  "unit": "%",
+                  "method": "Visual estimate"
+                }
+              },
+              {
+                "taxonDeterminations": {
+                  "originalDetermination": {
+                    "taxonName": "Hylocomium splendens"
+                  }
+                },
+                "coverValue": {
+                  "value": 11,
+                  "measurementScale": "ratio",
+                  "unit": "%",
+                  "method": "Visual estimate"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

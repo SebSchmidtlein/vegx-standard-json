@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='ISO-8859-1' standalone='yes' ?>
+<vegX xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dwg="http://rs.tdwg.org/dwc/geospatial/" xmlns:tcs="http://www.tdwg.org/schemas/tcs/1.01">
+  <parties>
+    <party id="originator_34">
+      <individualName>Max, Mustermann</individualName>
+    </party>
+  </parties>
+  <methods>
+    <method id="customLayerSystem">
+      <name>basic releve_Layers</name>
+      <description>No vertical differentiation</description>
+      <subject>Classification of vegetation layers (strata, tiers)</subject>
+    </method>
+    <method id="method_percent_cover_of_species">
+      <name>Percent cover of species</name>
+      <description>Visual estimate</description>
+      <subject>Species cover</subject>
+      <citationString />
+    </method>
+  </methods>
+  <attributes>
+    <attribute id="percent_cover_of_species">
+      <quantitative>
+        <methodID>method_percent_cover_of_species</methodID>
+        <unit>%</unit>
+      </quantitative>
+    </attribute>
+  </attributes>
+  <strata>
+    <stratum id="stratum_1">
+      <stratumName>na</stratumName>
+      <methodID>customLayerSystem</methodID>
+      <definition />
+      <order>1</order>
+      <lowerLimit>0</lowerLimit>
+    </stratum>
+  </strata>
+  <organismNames>
+    <organismName id="organismName_176" taxonName="true">Quercus robur</organismName>
+    <organismName id="organismName_177" taxonName="true">Urtica dioica</organismName>
+    <organismName id="organismName_178" taxonName="true">Hylocomium splendens</organismName>
+  </organismNames>
+  <organismIdentities>
+    <organismIdentity id="organismIdentitiy_176">
+      <originalOrganismNameID>organismName_176</originalOrganismNameID>
+      <originalIdentificationConcept>
+        <taxonConceptID />
+      </originalIdentificationConcept>
+    </organismIdentity>
+    <organismIdentity id="organismIdentitiy_177">
+      <originalOrganismNameID>organismName_177</originalOrganismNameID>
+      <originalIdentificationConcept>
+        <taxonConceptID />
+      </originalIdentificationConcept>
+    </organismIdentity>
+    <organismIdentity id="organismIdentitiy_178">
+      <originalOrganismNameID>organismName_178</originalOrganismNameID>
+      <originalIdentificationConcept>
+        <taxonConceptID />
+      </originalIdentificationConcept>
+    </organismIdentity>
+  </organismIdentities>
+  <projects>
+    <project id="11">
+      <title>basic releve</title>
+    </project>
+  </projects>
+  <plots>
+    <plot id="31">
+      <plotName>1</plotName>
+    </plot>
+  </plots>
+  <plotObservations>
+    <plotObservation id="plotObservation_31">
+      <plotID>31</plotID>
+      <obsStartDate>2026-08-06</obsStartDate>
+      <plotObservationUniqueIdentifier>1</plotObservationUniqueIdentifier>
+      <projectID>11</projectID>
+      <observationPartyID>originator_34</observationPartyID>
+    </plotObservation>
+  </plotObservations>
+  <aggregateOrganismObservations>
+    <aggregateOrganismObservation id="aggregateObservation_176">
+      <plotObservationID>plotObservation_31</plotObservationID>
+      <organismIdentityID>organismIdentitiy_176</organismIdentityID>
+      <aggregateOrganismMeasurement>
+        <value>22</value>
+        <attributeID>percent_cover_of_species</attributeID>
+      </aggregateOrganismMeasurement>
+    </aggregateOrganismObservation>
+    <aggregateOrganismObservation id="aggregateObservation_177">
+      <plotObservationID>plotObservation_31</plotObservationID>
+      <organismIdentityID>organismIdentitiy_177</organismIdentityID>
+      <aggregateOrganismMeasurement>
+        <value>33</value>
+        <attributeID>percent_cover_of_species</attributeID>
+      </aggregateOrganismMeasurement>
+    </aggregateOrganismObservation>
+    <aggregateOrganismObservation id="aggregateObservation_178">
+      <plotObservationID>plotObservation_31</plotObservationID>
+      <organismIdentityID>organismIdentitiy_178</organismIdentityID>
+      <aggregateOrganismMeasurement>
+        <value>11</value>
+        <attributeID>percent_cover_of_species</attributeID>
+      </aggregateOrganismMeasurement>
+    </aggregateOrganismObservation>
+  </aggregateOrganismObservations>
+</vegX>

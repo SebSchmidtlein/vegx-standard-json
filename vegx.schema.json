@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://iavs.org/vegx/schema/3.0/vegx.schema.json",
   "title": "VegX 3.0 – Vegetation Plot Exchange Standard",
-  "description": "JSON Schema for exchanging vegetation plot (relevé) data. A dataset contains one or more self-contained projects, each with its metadata, shared definitions, and plotObservation records. Each plotObservation is the complete record of a single plot surveyed at a specific time: plot identity and location, observer and method metadata, user-defined stratum definitions, taxon occurrences by stratum, site observations, community type assignments, and broader community-level observations. This schema replaces the VegX 2.x XSD format; it covers the same information model with document-centric design rather than normalised ID references.",
+  "description": "JSON Schema for exchanging vegetation plot (relevé) data. A dataset contains one or more self-contained projects, each with its metadata, shared definitions, and plots. Each plot is the physical sampling location plus its full observation history: a list of plotObservations, one per visit, each with observer and method metadata, user-defined stratum definitions, taxon occurrences by stratum, site observations, community type assignments, and broader community-level observations. This schema replaces the VegX 2.x XSD format; it covers the same information model with document-centric design rather than normalised ID references.",
   "type": "object",
   "required": ["vegxVersion", "dataset"],
   "additionalProperties": false,
@@ -45,8 +45,8 @@
 
     "plotObservation": {
       "type": "object",
-      "description": "A single vegetation survey: the complete record of one plot observed at one point in time. This is the primary document unit.",
-      "required": ["plot", "obsStartDate"],
+      "description": "The record of one visit to a plot at a specific point in time: observer and method metadata, taxon occurrences, site observations, and community assignments. Nested under plot.plotObservations.",
+      "required": ["obsStartDate"],
       "additionalProperties": false,
       "properties": {
 
@@ -60,8 +60,6 @@
           "$ref": "#/definitions/identifier",
           "description": "Globally unique identifier for this observation event, e.g. a UUID or LSID. Recommended for data exchange with national databases or GBIF."
         },
-
-        "plot": { "$ref": "#/definitions/plot" },
 
         "obsStartDate": {
           "type": "string",
@@ -90,14 +88,14 @@
 
         "previousPlotObservationIDs": {
           "type": "array",
-          "description": "Stable plotObservationID values for earlier observations explicitly related to this observation. Usually unnecessary when the time series is clear from plotID and obsStartDate.",
+          "description": "Stable plotObservationID values for earlier observations explicitly related to this observation. Unnecessary for observations of the same physical plot, since sibling entries in plot.plotObservations are already an ordered time series; use this only to link to an observation of the same physical plot recorded in a different project's repeated copy of this plot.",
           "items": { "$ref": "#/definitions/identifier" },
           "uniqueItems": true
         },
 
         "previousPlotObservationNames": {
           "type": "array",
-          "description": "Human-readable plotObservationName values for earlier observations explicitly related to this observation, for use when a stable plotObservationID is not available. Usually unnecessary when the time series is clear from plotID and obsStartDate.",
+          "description": "Human-readable plotObservationName values for earlier observations explicitly related to this observation, for use when a stable plotObservationID is not available. Unnecessary for observations of the same physical plot, since sibling entries in plot.plotObservations are already an ordered time series; use this only to link to an observation of the same physical plot recorded in a different project's repeated copy of this plot.",
           "items": { "type": "string", "minLength": 1 },
           "uniqueItems": true
         },
@@ -345,8 +343,8 @@
 
     "plot": {
       "type": "object",
-      "description": "The physical sampling location. Properties assumed constant across observation events (location, geometry, area).",
-      "required": ["plotName"],
+      "description": "The physical sampling location and its full observation history. Properties assumed constant across observation events (location, geometry, area) are set here; each visit is one entry in plotObservations.",
+      "required": ["plotName", "plotObservations"],
       "additionalProperties": false,
       "properties": {
 
@@ -506,6 +504,13 @@
               }
             }
           }
+        },
+
+        "plotObservations": {
+          "type": "array",
+          "description": "Observation events (visits) for this plot, ordered from oldest to newest. If this physical plot is also surveyed as part of another project, repeat this entire plot record (with the same plotID/plotName) in that project, containing only the plotObservations belonging to that project.",
+          "minItems": 1,
+          "items": { "$ref": "#/definitions/plotObservation" }
         },
 
         "notes": { "$ref": "#/definitions/notes" },
@@ -752,6 +757,11 @@
           "items": { "$ref": "#/definitions/attribute" }
         },
         "attributeGroups": { "$ref": "#/definitions/attributeGroups" },
+        "observationGroups": {
+          "type": "array",
+          "description": "Named groupings to which this observation belongs because of a shared scientific or data-management characteristic.",
+          "items": { "$ref": "#/definitions/observationGroup" }
+        },
         "notes": { "$ref": "#/definitions/notes" },
 
         "extensions": { "$ref": "#/definitions/extensions" }
@@ -787,6 +797,12 @@
 
         "attributeGroups": { "$ref": "#/definitions/attributeGroups" },
 
+        "observationGroups": {
+          "type": "array",
+          "description": "Named groupings to which this observation belongs because of a shared scientific or data-management characteristic.",
+          "items": { "$ref": "#/definitions/observationGroup" }
+        },
+
         "notes": { "$ref": "#/definitions/notes" },
 
         "extensions": { "$ref": "#/definitions/extensions" }
@@ -796,19 +812,14 @@
 
     "organismObservation": {
       "type": "object",
-      "description": "Dated observation of a single, individually identifiable organism such as a numbered tree in a permanent plot. Repeat organismID in later plot observations to build a time series without a separate individual-organism registry.",
+      "description": "Dated observation of a single, individually identifiable organism such as a numbered tree in a permanent plot. Repeat organismLabel unchanged in later plot observations to build a time series without a separate individual-organism registry.",
       "required": ["taxonDeterminations"],
       "additionalProperties": false,
       "properties": {
 
-        "organismID": {
-          "$ref": "#/definitions/identifier",
-          "description": "Stable identifier for this individual, repeated unchanged across resurveys. It must be unique within the dataset; use a globally unique URI or UUID when records will be exchanged independently. This is an identity value, not a reference to another object."
-        },
-
-        "tagLabel": {
+        "organismLabel": {
           "type": "string",
-          "description": "Physical identification label attached to the individual, e.g. a tree tag number. Unlike organismID, a tag may be replaced or renumbered."
+          "description": "Identification label associated with the individual, e.g. a tree tag number, field code, or map label. Should be kept invariant across resurveys. Use a globally unique UUID or URI instead of a field label when records for this individual will be exchanged independently across datasets."
         },
 
         "birthDate": {
@@ -832,73 +843,45 @@
           "description": "Stratum this individual belongs to, referencing strata in this plotObservation."
         },
 
+        "organismHeight": {
+          "$ref": "#/definitions/nonNegativeObservedValueWithUnit",
+          "description": "Maximum height reached by this individual. State the unit."
+        },
+
+        "stemDiameter": {
+          "$ref": "#/definitions/nonNegativeObservedValueWithUnit",
+          "description": "Diameter of the stem. State the unit. Record the height along the stem at which it was measured in diameterBaseDistance, e.g. for DBH (diameter at breast height)."
+        },
+
+        "diameterBaseDistance": {
+          "$ref": "#/definitions/nonNegativeObservedValueWithUnit",
+          "description": "Distance along the stem from the ground at which stemDiameter was taken, e.g. 1.3 m for DBH. Omit when a fixed convention is already stated by the method."
+        },
+
         "location": {
-          "type": "object",
-          "description": "Position of this individual. Provide whichever coordinate type(s) the survey protocol uses; all fields are optional and multiple systems may be recorded simultaneously.",
-          "additionalProperties": false,
-          "properties": {
-            "geometry": {
-              "$ref": "#/definitions/geoJsonGeometry",
-              "description": "Absolute georeferenced position as a GeoJSON Point, e.g. from a GPS fix. To record the positioning instrument (e.g. 'Garmin GPSMAP 66i', 'total station', 'dGPS'), add an attribute with attributeType 'geometryMethod'."
-            },
-            "spatialReference": {
-              "type": "string",
-              "description": "EPSG code or Proj string of the CRS for the absolute geometry, if not EPSG:4326. E.g. 'EPSG:28992' (Dutch RD New), 'EPSG:32632' (UTM zone 32N)."
-            },
-            "locationAccuracy": {
-              "$ref": "#/definitions/nonNegativeObservedValueWithUnit",
-              "description": "Estimated positional accuracy. State the unit."
-            },
-            "plotX": {
-              "$ref": "#/definitions/numericObservedValueWithUnit",
-              "description": "Cartesian X offset from the plot origin, typically a south-west corner or marked reference point. State the unit."
-            },
-            "plotY": {
-              "$ref": "#/definitions/numericObservedValueWithUnit",
-              "description": "Cartesian Y offset from the plot origin. State the unit."
-            },
-            "transectPosition": {
-              "$ref": "#/definitions/nonNegativeObservedValueWithUnit",
-              "description": "Distance along the transect axis from the transect start, for one-dimensional belt transect surveys. State the unit."
-            },
-            "distanceFromOrigin": {
-              "$ref": "#/definitions/nonNegativeObservedValueWithUnit",
-              "description": "Radial distance from a defined reference point. State the unit. Use with bearingFromOrigin for polar coordinates, or with quarter for Point-Centred Quarter Method."
-            },
-            "bearingFromOrigin": {
-              "description": "Bearing clockwise from north to this individual, measured from the plot origin (polar coordinates). State the angular unit. Use with distanceFromOrigin.",
-              "allOf": [
-                { "$ref": "#/definitions/numericObservedValue" },
-                {
-                  "type": "object",
-                  "required": ["unit"],
-                  "properties": {
-                    "value": { "type": "number", "minimum": 0, "exclusiveMaximum": 360 }
-                  }
-                }
-              ]
-            },
-            "quarter": {
-              "type": "string",
-              "enum": ["NE", "NW", "SE", "SW"],
-              "description": "Quarter in which this individual was found, for Point-Centred Quarter Method (PCQM). The area around each sample point is divided into four 90° quadrants: NE, NW, SE, SW. Use with distanceFromOrigin for the distance to the nearest individual in that quarter."
-            },
-            "notes": { "$ref": "#/definitions/notes" },
-            "attributes": {
-              "type": "array",
-              "description": "Further positional attributes or method qualifiers for this individual's location, e.g. positioning instrument, coordinate precision class.",
-              "items": { "$ref": "#/definitions/attribute" }
-            }
-          }
+          "$ref": "#/definitions/organismLocationRecord",
+          "description": "Preferred or most recent position of this individual. Use locationRecords to preserve alternative or historical determinations."
+        },
+
+        "locationRecords": {
+          "type": "array",
+          "description": "Alternative or historical determinations of this individual's position, e.g. from different parties or resurvey dates. The location field remains the preferred value for routine use.",
+          "items": { "$ref": "#/definitions/organismLocationRecord" }
         },
 
         "attributes": {
           "type": "array",
-          "description": "Attributes of this individual, e.g. diameter at breast height (DBH, ratio), total height (ratio), crown diameter (ratio), growth form (nominal), vitality class (ordinal).",
+          "description": "Attributes of this individual beyond height and diameter, e.g. girth (ratio), crown diameter (ratio), growth form (nominal), vitality class (ordinal).",
           "items": { "$ref": "#/definitions/attribute" }
         },
 
         "attributeGroups": { "$ref": "#/definitions/attributeGroups" },
+
+        "observationGroups": {
+          "type": "array",
+          "description": "Named groupings to which this observation belongs because of a shared scientific or data-management characteristic.",
+          "items": { "$ref": "#/definitions/observationGroup" }
+        },
 
         "occurrenceStatus": {
           "type": "string",
@@ -913,20 +896,110 @@
       }
     },
 
-    "organismRelationship": {
+    "organismLocationRecord": {
       "type": "object",
-      "description": "A direct relationship from the observed individual to another individual identified by its stable organismID.",
-      "required": ["relatedOrganismID", "relationship"],
+      "description": "A self-contained determination of an individual's position. Provide whichever coordinate type(s) the survey protocol uses; all fields are optional and multiple systems may be recorded simultaneously.",
       "additionalProperties": false,
       "properties": {
-        "relatedOrganismID": {
-          "$ref": "#/definitions/identifier",
-          "description": "organismID of the related individual. The related individual may occur in the same or another plot observation in this dataset."
+        "geometry": {
+          "$ref": "#/definitions/geoJsonGeometry",
+          "description": "Absolute georeferenced position as a GeoJSON Point, e.g. from a GPS fix. To record the positioning instrument (e.g. 'Garmin GPSMAP 66i', 'total station', 'dGPS'), add an attribute with attributeType 'geometryMethod'."
+        },
+        "spatialReference": {
+          "type": "string",
+          "description": "EPSG code or Proj string of the CRS for the absolute geometry, if not EPSG:4326. E.g. 'EPSG:28992' (Dutch RD New), 'EPSG:32632' (UTM zone 32N)."
+        },
+        "locationAccuracy": {
+          "$ref": "#/definitions/nonNegativeObservedValueWithUnit",
+          "description": "Estimated positional accuracy. State the unit."
+        },
+        "plotX": {
+          "$ref": "#/definitions/numericObservedValueWithUnit",
+          "description": "Cartesian X offset from the plot origin, or from referenceOrganismLabel when given. State the unit."
+        },
+        "plotY": {
+          "$ref": "#/definitions/numericObservedValueWithUnit",
+          "description": "Cartesian Y offset from the plot origin, or from referenceOrganismLabel when given. State the unit."
+        },
+        "transectPosition": {
+          "$ref": "#/definitions/nonNegativeObservedValueWithUnit",
+          "description": "Distance along the transect axis from the transect start, for one-dimensional belt transect surveys. State the unit."
+        },
+        "distanceFromOrigin": {
+          "$ref": "#/definitions/nonNegativeObservedValueWithUnit",
+          "description": "Radial distance from a defined reference point: the plot origin, or referenceOrganismLabel when given. State the unit."
+        },
+        "bearingFromOrigin": {
+          "description": "Bearing clockwise from north to this individual, measured from the reference point (polar coordinates). State the angular unit. Use with distanceFromOrigin.",
+          "allOf": [
+            { "$ref": "#/definitions/numericObservedValue" },
+            {
+              "type": "object",
+              "required": ["unit"],
+              "properties": {
+                "value": { "type": "number", "minimum": 0, "exclusiveMaximum": 360 }
+              }
+            }
+          ]
+        },
+        "quarter": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Quadrant or sector in which this individual was found, per a numbering or orientation scheme defined by the project or protocol, e.g. compass NE/NW/SE/SW or numbered zones."
+        },
+        "quarterScheme": {
+          "type": "string",
+          "description": "Numbering or orientation scheme defining quarter, e.g. 'compass NE/NW/SE/SW quadrants' or 'numbered quadrants clockwise from north'. Reference a project-level protocol here when one applies."
+        },
+        "referenceOrganismLabel": {
+          "type": "string",
+          "minLength": 1,
+          "description": "organismLabel of another individual used as the reference point for plotX/plotY, distanceFromOrigin, and bearingFromOrigin, instead of the plot origin. Omit when these are relative to the plot origin."
+        },
+        "recordDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Date this determination was made, if different from the plot observation date."
+        },
+        "recordedBy": {
+          "type": "array",
+          "description": "People or organizations responsible for this determination.",
+          "items": { "$ref": "#/definitions/party" }
+        },
+        "sources": {
+          "type": "array",
+          "description": "Maps, GPS files, imagery, or other resources used to determine the location.",
+          "items": { "type": "string" }
+        },
+        "preferred": {
+          "type": "boolean",
+          "default": false,
+          "description": "True when this record supplies the preferred position for this individual, if more than one determination is given."
+        },
+        "notes": { "$ref": "#/definitions/notes" },
+        "attributes": {
+          "type": "array",
+          "description": "Further positional attributes or method qualifiers for this individual's location, e.g. positioning instrument, coordinate precision class.",
+          "items": { "$ref": "#/definitions/attribute" }
+        }
+      }
+    },
+
+    "organismRelationship": {
+      "type": "object",
+      "description": "A direct relationship from the observed individual to another individual identified by its invariant organismLabel.",
+      "required": ["relatedOrganismLabel", "relationship"],
+      "additionalProperties": false,
+      "properties": {
+        "relatedOrganismLabel": {
+          "type": "string",
+          "minLength": 1,
+          "description": "organismLabel of the related individual. The related individual may occur in the same or another plot observation in this dataset."
         },
         "relationship": {
           "type": "string",
           "minLength": 1,
-          "description": "Relationship from the perspective of the observed individual, e.g. 'fusedWith', 'epiphyteOn', 'hostOf', 'offspringOf', or 'pairedWith'."
+          "description": "Relationship from the perspective of the observed individual, e.g. 'fused with', 'epiphyte on', 'host of', 'offspring of', or 'paired with'."
         },
         "notes": { "$ref": "#/definitions/notes" }
       }
@@ -1018,7 +1091,7 @@
         },
         "taxonConcept": {
           "type": "object",
-          "description": "Taxon concept applied by this determination, defined by the organism name and a taxonomic treatment.",
+          "description": "Concept applied by this determination, defined by the organism name and a taxonomic treatment.",
           "required": ["reference"],
           "additionalProperties": false,
           "properties": {
@@ -1845,10 +1918,10 @@
           "description": "Definitions of coded cover or abundance scales used in this project. Referenced by name (coverScale) from taxonObservation or stratumObservation records. Include each named coded scale used by the project. Direct numeric percentages are self-describing through coverValue with unit % and do not need a coverScale definition.",
           "items": { "$ref": "#/definitions/coverScale" }
         },
-        "plotObservations": {
+        "plots": {
           "type": "array",
-          "description": "Plot observation records belonging to this project. Repeat a complete observation in each project when it belongs to multiple projects, preserving the same stable plotObservationID when available.",
-          "items": { "$ref": "#/definitions/plotObservation" }
+          "description": "Plots surveyed in this project, each with its full observation history. If a physical plot is also surveyed as part of another project, repeat the plot record (with the same plotID/plotName) in that project, containing only the plotObservations belonging to that project.",
+          "items": { "$ref": "#/definitions/plot" }
         },
         "notes": { "$ref": "#/definitions/notes" },
         "extensions": { "$ref": "#/definitions/extensions" }

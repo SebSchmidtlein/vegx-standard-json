@@ -4,12 +4,12 @@
     "projects": [
       {
         "projectName": "taxonomic concepts",
-        "plotObservations": [
+        "plots": [
           {
-            "plot": {
-              "plotName": "1"
-            },
-            "obsStartDate": "2026-08-06",
+            "plotName": "1",
+            "plotObservations": [
+              {
+                "obsStartDate": "2026-08-06",
             "taxonObservations": [
               {
                 "taxonDeterminations": [
@@ -67,6 +67,8 @@
                     }
                   }
                 ]
+              }
+            ]
               }
             ]
           }

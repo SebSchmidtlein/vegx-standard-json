@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='ISO-8859-1' standalone='yes' ?>
+<vegX xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dwg="http://rs.tdwg.org/dwc/geospatial/" xmlns:tcs="http://www.tdwg.org/schemas/tcs/1.01">
+  <methods>
+    <method id="customLayerSystem">
+      <name>permanent plot_Layers</name>
+      <description>No vertical differentiation</description>
+      <subject>Classification of vegetation layers (strata, tiers)</subject>
+    </method>
+    <method id="method_percent_cover_of_species">
+      <name>Percent cover of species</name>
+      <description>Visual estimate</description>
+      <subject>Species cover</subject>
+      <citationString />
+    </method>
+  </methods>
+  <attributes>
+    <attribute id="percent_cover_of_species">
+      <quantitative>
+        <methodID>method_percent_cover_of_species</methodID>
+        <unit>%</unit>
+      </quantitative>
+    </attribute>
+  </attributes>
+  <strata>
+    <stratum id="stratum_1">
+      <stratumName>na</stratumName>
+      <methodID>customLayerSystem</methodID>
+      <definition />
+      <order>1</order>
+      <lowerLimit>0</lowerLimit>
+    </stratum>
+  </strata>
+  <organismNames>
+    <organismName id="organismName_190" taxonName="true">Quercus robur</organismName>
+    <organismName id="organismName_191" taxonName="true">Quercus robur</organismName>
+    <organismName id="organismName_192" taxonName="true">Galeobdolon luteum</organismName>
+  </organismNames>
+  <organismIdentities>
+    <organismIdentity id="organismIdentitiy_190">
+      <originalOrganismNameID>organismName_190</originalOrganismNameID>
+      <originalIdentificationConcept>
+        <taxonConceptID />
+      </originalIdentificationConcept>
+    </organismIdentity>
+    <organismIdentity id="organismIdentitiy_191">
+      <originalOrganismNameID>organismName_191</originalOrganismNameID>
+      <originalIdentificationConcept>
+        <taxonConceptID />
+      </originalIdentificationConcept>
+    </organismIdentity>
+    <organismIdentity id="organismIdentitiy_192">
+      <originalOrganismNameID>organismName_192</originalOrganismNameID>
+      <originalIdentificationConcept>
+        <taxonConceptID />
+      </originalIdentificationConcept>
+    </organismIdentity>
+  </organismIdentities>
+  <projects>
+    <project id="17">
+      <title>permanent plot</title>
+    </project>
+  </projects>
+  <plots>
+    <plot id="42">
+      <plotName>a</plotName>
+    </plot>
+    <plot id="43">
+      <plotName>a</plotName>
+    </plot>
+  </plots>
+  <plotObservations>
+    <plotObservation id="plotObservation_42">
+      <plotID>42</plotID>
+      <obsStartDate>2026-08-07</obsStartDate>
+      <plotObservationUniqueIdentifier>1</plotObservationUniqueIdentifier>
+      <projectID>17</projectID>
+    </plotObservation>
+    <plotObservation id="plotObservation_43">
+      <plotID>43</plotID>
+      <obsStartDate>2026-08-07</obsStartDate>
+      <plotObservationUniqueIdentifier>2</plotObservationUniqueIdentifier>
+      <projectID>17</projectID>
+    </plotObservation>
+  </plotObservations>
+  <aggregateOrganismObservations>
+    <aggregateOrganismObservation id="aggregateObservation_190">
+      <plotObservationID>plotObservation_42</plotObservationID>
+      <organismIdentityID>organismIdentitiy_190</organismIdentityID>
+      <aggregateOrganismMeasurement>
+        <value>10</value>
+        <attributeID>percent_cover_of_species</attributeID>
+      </aggregateOrganismMeasurement>
+    </aggregateOrganismObservation>
+    <aggregateOrganismObservation id="aggregateObservation_191">
+      <plotObservationID>plotObservation_43</plotObservationID>
+      <organismIdentityID>organismIdentitiy_191</organismIdentityID>
+      <aggregateOrganismMeasurement>
+        <value>18</value>
+        <attributeID>percent_cover_of_species</attributeID>
+      </aggregateOrganismMeasurement>
+    </aggregateOrganismObservation>
+    <aggregateOrganismObservation id="aggregateObservation_192">
+      <plotObservationID>plotObservation_43</plotObservationID>
+      <organismIdentityID>organismIdentitiy_192</organismIdentityID>
+      <aggregateOrganismMeasurement>
+        <value>2</value>
+        <attributeID>percent_cover_of_species</attributeID>
+      </aggregateOrganismMeasurement>
+    </aggregateOrganismObservation>
+  </aggregateOrganismObservations>
+  <note>
+    <text>Data collection and export were done using Vegapp for Android.</text>
+    <date>2026-08-07</date>
+  </note>
+  <note>
+    <text>Species reference list used while exporting this data (not necessarily while creating this data): Ge
+rmanSL v.1.5.6. This reference list is based on GermanSL, Taxonomische Referenzliste f&#252;r Botanische 
+Funddatenbanken in Deutschland, published by F. Jansen, University of Rostock. Please cite it if you
+ used the list: Jansen, F., Dengler, J. (2008): GermanSL &#8211; Eine universelle taxonomische Referenzlis
+te f&#252;r Vegetationsdatenbanken in Deutschland. Tuexenia 28: 239-253</text>
+    <date>2026-08-07</date>
+  </note>
+</vegX>

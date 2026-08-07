@@ -16,131 +16,133 @@
         "category": "dataManagement"
       }
         ],
-        "plotObservations": [
+        "plots": [
           {
-            "plot": {
-              "plotName": "1"
-            },
-            "obsStartDate": "2026-08-06",
-            "strata": [
+            "plotName": "1",
+            "plotObservations": [
               {
-                "stratumID": "stratum_1",
-                "definition": {
-                  "name": "Bäume",
-                  "description": "Phanerophyten und Lianen mit mehr als 5 m Höhe",
-                  "order": 1,
-                  "heightRange": {
-                    "minimum": 5,
-                    "unit": "m"
+                "obsStartDate": "2026-08-06",
+                "strata": [
+                  {
+                    "stratumID": "stratum_1",
+                    "definition": {
+                      "name": "Bäume",
+                      "description": "Phanerophyten und Lianen mit mehr als 5 m Höhe",
+                      "order": 1,
+                      "heightRange": {
+                        "minimum": 5,
+                        "unit": "m"
+                      },
+                      "method": {
+                        "name": "stratified vegetation_Layers",
+                        "description": "Turboveg-style",
+                        "subject": "Classification of vegetation layers (strata, tiers)"
+                      }
+                    },
+                    "heightMax": {
+                      "value": 49,
+                      "measurementScale": "ratio",
+                      "unit": "m"
+                    },
+                    "coverValue": {
+                      "value": 91,
+                      "measurementScale": "ratio",
+                      "unit": "%",
+                      "method": "Visual estimate"
+                    }
                   },
-                  "method": {
-                    "name": "stratified vegetation_Layers",
-                    "description": "Turboveg-style",
-                    "subject": "Classification of vegetation layers (strata, tiers)"
+                  {
+                    "stratumID": "stratum_5",
+                    "definition": {
+                      "name": "Sträucher",
+                      "description": "Phanerophyten und Lianen zwischen 0,5 und 5 m Höhe",
+                      "order": 2,
+                      "heightRange": {
+                        "minimum": 0.5,
+                        "maximum": 5,
+                        "unit": "m"
+                      },
+                      "method": {
+                        "name": "stratified vegetation_Layers",
+                        "description": "Turboveg-style",
+                        "subject": "Classification of vegetation layers (strata, tiers)"
+                      }
+                    },
+                    "heightMax": {
+                      "value": 5,
+                      "measurementScale": "ratio",
+                      "unit": "m"
+                    },
+                    "coverValue": {
+                      "value": 11,
+                      "measurementScale": "ratio",
+                      "unit": "%",
+                      "method": "Visual estimate"
+                    }
                   }
-                },
-                "heightMax": {
-                  "value": 49,
-                  "measurementScale": "ratio",
-                  "unit": "m"
-                },
-                "coverValue": {
-                  "value": 91,
-                  "measurementScale": "ratio",
-                  "unit": "%",
-                  "method": "Visual estimate"
-                }
-              },
-              {
-                "stratumID": "stratum_5",
-                "definition": {
-                  "name": "Sträucher",
-                  "description": "Phanerophyten und Lianen zwischen 0,5 und 5 m Höhe",
-                  "order": 2,
-                  "heightRange": {
-                    "minimum": 0.5,
-                    "maximum": 5,
-                    "unit": "m"
+                ],
+                "taxonObservations": [
+                  {
+                    "taxonDeterminations": [
+                      {
+                        "determinationType": "identification",
+                        "taxonName": "Quercus robur"
+                      }
+                    ],
+                    "stratumID": "stratum_1",
+                    "coverValue": {
+                      "value": 50,
+                      "measurementScale": "ratio",
+                      "unit": "%",
+                      "method": "Visual estimate"
+                    }
                   },
-                  "method": {
-                    "name": "stratified vegetation_Layers",
-                    "description": "Turboveg-style",
-                    "subject": "Classification of vegetation layers (strata, tiers)"
-                  }
-                },
-                "heightMax": {
-                  "value": 5,
-                  "measurementScale": "ratio",
-                  "unit": "m"
-                },
-                "coverValue": {
-                  "value": 11,
-                  "measurementScale": "ratio",
-                  "unit": "%",
-                  "method": "Visual estimate"
-                }
-              }
-            ],
-            "taxonObservations": [
-              {
-                "taxonDeterminations": [
                   {
-                    "determinationType": "identification",
-                    "taxonName": "Quercus robur"
-                  }
-                ],
-                "stratumID": "stratum_1",
-                "coverValue": {
-                  "value": 50,
-                  "measurementScale": "ratio",
-                  "unit": "%",
-                  "method": "Visual estimate"
-                }
-              },
-              {
-                "taxonDeterminations": [
+                    "taxonDeterminations": [
+                      {
+                        "determinationType": "identification",
+                        "taxonName": "Quercus robur"
+                      }
+                    ],
+                    "stratumID": "stratum_5",
+                    "coverValue": {
+                      "value": 6,
+                      "measurementScale": "ratio",
+                      "unit": "%",
+                      "method": "Visual estimate"
+                    }
+                  },
                   {
-                    "determinationType": "identification",
-                    "taxonName": "Quercus robur"
-                  }
-                ],
-                "stratumID": "stratum_5",
-                "coverValue": {
-                  "value": 6,
-                  "measurementScale": "ratio",
-                  "unit": "%",
-                  "method": "Visual estimate"
-                }
-              },
-              {
-                "taxonDeterminations": [
+                    "taxonDeterminations": [
+                      {
+                        "determinationType": "identification",
+                        "taxonName": "Fagus sylvatica"
+                      }
+                    ],
+                    "stratumID": "stratum_1",
+                    "coverValue": {
+                      "value": 41,
+                      "measurementScale": "ratio",
+                      "unit": "%",
+                      "method": "Visual estimate"
+                    }
+                  },
                   {
-                    "determinationType": "identification",
-                    "taxonName": "Fagus sylvatica"
+                    "taxonDeterminations": [
+                      {
+                        "determinationType": "identification",
+                        "taxonName": "Fagus sylvatica"
+                      }
+                    ],
+                    "stratumID": "stratum_5",
+                    "coverValue": {
+                      "value": 5,
+                      "measurementScale": "ratio",
+                      "unit": "%",
+                      "method": "Visual estimate"
+                    }
                   }
-                ],
-                "stratumID": "stratum_1",
-                "coverValue": {
-                  "value": 41,
-                  "measurementScale": "ratio",
-                  "unit": "%",
-                  "method": "Visual estimate"
-                }
-              },
-              {
-                "taxonDeterminations": [
-                  {
-                    "determinationType": "identification",
-                    "taxonName": "Fagus sylvatica"
-                  }
-                ],
-                "stratumID": "stratum_5",
-                "coverValue": {
-                  "value": 5,
-                  "measurementScale": "ratio",
-                  "unit": "%",
-                  "method": "Visual estimate"
-                }
+                ]
               }
             ]
           }

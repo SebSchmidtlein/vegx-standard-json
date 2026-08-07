@@ -1,0 +1,209 @@
+<?xml version='1.0' encoding='ISO-8859-1' standalone='yes' ?>
+<vegX xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dwg="http://rs.tdwg.org/dwc/geospatial/" xmlns:tcs="http://www.tdwg.org/schemas/tcs/1.01">
+  <methods>
+    <method id="customLayerSystem">
+      <name>individual organisms _Layers</name>
+      <description>No vertical differentiation</description>
+      <subject>Classification of vegetation layers (strata, tiers)</subject>
+    </method>
+    <method id="method_polar_coordinate_distance">
+      <name>Distance of an individual as part of a polar coordinate</name>
+      <description>Polar coordinate distance measurement</description>
+      <subject>Location of an individual</subject>
+      <citationString />
+    </method>
+    <method id="method_individual_location_quarter">
+      <name>Location of an individual in a plot quadrant</name>
+      <description>Quadrant location measurement</description>
+      <subject>Location of an individual</subject>
+      <citationString />
+    </method>
+    <method id="method_diameter_at_breast_height_in_cm_130">
+      <name>Diameter at breast height (DBH) in cm</name>
+      <description>Diameter measured at 130 m above ground</description>
+      <subject>Diameter</subject>
+      <citationString />
+    </method>
+    <method id="method_girth_at_breast_height_in_cm_130">
+      <name>Girth at breast height in cm</name>
+      <description>Girth measured at 130 m above ground</description>
+      <subject>Girth</subject>
+      <citationString />
+    </method>
+  </methods>
+  <attributes>
+    <attribute id="diameter_at_breast_height_in_cm_130">
+      <quantitative>
+        <methodID>method_diameter_at_breast_height_in_cm_130</methodID>
+        <unit>cm</unit>
+      </quantitative>
+    </attribute>
+    <attribute id="girth_at_breast_height_in_cm_130">
+      <quantitative>
+        <methodID>method_girth_at_breast_height_in_cm_130</methodID>
+        <unit>cm</unit>
+      </quantitative>
+    </attribute>
+    <attribute id="polar_coordinate_distance_33">
+      <quantitative>
+        <methodID>method_polar_coordinate_distance</methodID>
+        <unit></unit>
+      </quantitative>
+    </attribute>
+    <attribute id="individual_location_quarter_3">
+      <qualitative>
+        <methodID>method_individual_location_quarter</methodID>
+        <code>3</code>
+      </qualitative>
+    </attribute>
+    <attribute id="individual_location_quarter_2">
+      <qualitative>
+        <methodID>method_individual_location_quarter</methodID>
+        <code>2</code>
+      </qualitative>
+    </attribute>
+  </attributes>
+  <strata>
+    <stratum id="stratum_1">
+      <stratumName>na</stratumName>
+      <methodID>customLayerSystem</methodID>
+      <definition />
+      <order>1</order>
+      <lowerLimit>0</lowerLimit>
+    </stratum>
+  </strata>
+  <organismNames>
+    <organismName id="organismName_33_i" taxonName="true">Tilia cordata</organismName>
+    <organismName id="organismName_34_i" taxonName="true">Tilia cf. cordata</organismName>
+  </organismNames>
+  <organismIdentities>
+    <organismIdentity id="organismIdentitiy_33">
+      <originalOrganismNameID>organismName_33_i</originalOrganismNameID>
+      <originalIdentificationConcept>
+        <taxonConceptID />
+      </originalIdentificationConcept>
+    </organismIdentity>
+    <organismIdentity id="organismIdentitiy_34">
+      <originalOrganismNameID>organismName_34_i</originalOrganismNameID>
+      <originalIdentificationConcept>
+        <taxonConceptID />
+      </originalIdentificationConcept>
+    </organismIdentity>
+  </organismIdentities>
+  <projects>
+    <project id="18">
+      <title>individual organisms </title>
+    </project>
+  </projects>
+  <plots>
+    <plot id="45">
+      <plotName>Nr. 1</plotName>
+    </plot>
+  </plots>
+  <individualOrganisms>
+    <individualOrganism id="individualOrganism_33">
+      <plotID>45</plotID>
+      <individualOrganismLabel>33</individualOrganismLabel>
+      <organismIdentityID>organismIdentitiy_33</organismIdentityID>
+      <location>
+        <horizontalLocation>
+          <xyCoordinates>
+            <valueX>8.39330699</valueX>
+            <valueY>48.9305383</valueY>
+            <attributeID>geographic_latitude_longitude_in_decimal_degrees</attributeID>
+            <spatialReference>EPSG:4326</spatialReference>
+            <locationAccuracy>
+              <value>5.888431549072266</value>
+              <attributeID>location_accuracy_in_meter</attributeID>
+            </locationAccuracy>
+          </xyCoordinates>
+          <polarCoordinates>
+            <distance>
+              <value>22</value>
+              <attributeID>polar_coordinate_distance_33</attributeID>
+            </distance>
+          </polarCoordinates>
+        </horizontalLocation>
+        <quadrant>
+          <value>3</value>
+          <attributeID>individual_location_quarter_3</attributeID>
+        </quadrant>
+      </location>
+    </individualOrganism>
+    <individualOrganism id="individualOrganism_34">
+      <plotID>45</plotID>
+      <individualOrganismLabel>34</individualOrganismLabel>
+      <organismIdentityID>organismIdentitiy_34</organismIdentityID>
+      <location>
+        <horizontalLocation>
+          <xyCoordinates>
+            <valueX>8.39329623</valueX>
+            <valueY>48.93053175</valueY>
+            <attributeID>geographic_latitude_longitude_in_decimal_degrees</attributeID>
+            <spatialReference>EPSG:4326</spatialReference>
+            <locationAccuracy>
+              <value>3.9137487411499023</value>
+              <attributeID>location_accuracy_in_meter</attributeID>
+            </locationAccuracy>
+          </xyCoordinates>
+          <polarCoordinates>
+            <distance>
+              <value>13</value>
+              <attributeID>polar_coordinate_distance_33</attributeID>
+            </distance>
+          </polarCoordinates>
+        </horizontalLocation>
+        <quadrant>
+          <value>2</value>
+          <attributeID>individual_location_quarter_2</attributeID>
+        </quadrant>
+      </location>
+    </individualOrganism>
+  </individualOrganisms>
+  <plotObservations>
+    <plotObservation id="plotObservation_45">
+      <plotID>45</plotID>
+      <obsStartDate>2026-08-07</obsStartDate>
+      <plotObservationUniqueIdentifier>Nr. 1</plotObservationUniqueIdentifier>
+      <projectID>18</projectID>
+    </plotObservation>
+  </plotObservations>
+  <individualOrganismObservations>
+    <individualOrganismObservation id="individualOrganismObservation_33">
+      <plotObservationID>plotObservation_45</plotObservationID>
+      <individualOrganismID>individualOrganism_33</individualOrganismID>
+      <individualOrganismMeasurement>
+        <value>256</value>
+        <attributeID>diameter_at_breast_height_in_cm_130</attributeID>
+      </individualOrganismMeasurement>
+      <individualOrganismMeasurement>
+        <value>458</value>
+        <attributeID>girth_at_breast_height_in_cm_130</attributeID>
+      </individualOrganismMeasurement>
+    </individualOrganismObservation>
+    <individualOrganismObservation id="individualOrganismObservation_34">
+      <plotObservationID>plotObservation_45</plotObservationID>
+      <individualOrganismID>individualOrganism_34</individualOrganismID>
+      <individualOrganismMeasurement>
+        <value>15</value>
+        <attributeID>diameter_at_breast_height_in_cm_130</attributeID>
+      </individualOrganismMeasurement>
+      <individualOrganismMeasurement>
+        <value>45</value>
+        <attributeID>girth_at_breast_height_in_cm_130</attributeID>
+      </individualOrganismMeasurement>
+    </individualOrganismObservation>
+  </individualOrganismObservations>
+  <note>
+    <text>Data collection and export were done using Vegapp for Android.</text>
+    <date>2026-08-07</date>
+  </note>
+  <note>
+    <text>Species reference list used while exporting this data (not necessarily while creating this data): Ge
+rmanSL v.1.5.6. This reference list is based on GermanSL, Taxonomische Referenzliste f&#252;r Botanische 
+Funddatenbanken in Deutschland, published by F. Jansen, University of Rostock. Please cite it if you
+ used the list: Jansen, F., Dengler, J. (2008): GermanSL &#8211; Eine universelle taxonomische Referenzlis
+te f&#252;r Vegetationsdatenbanken in Deutschland. Tuexenia 28: 239-253</text>
+    <date>2026-08-07</date>
+  </note>
+</vegX>

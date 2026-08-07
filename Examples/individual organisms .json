@@ -1,0 +1,56 @@
+{
+  "vegxVersion": "3.0",
+  "dataset": {
+    "projects": [
+      {
+        "projectName": "individual organisms",
+        "plots": [
+          {
+            "plotName": "Nr. 1",
+            "plotObservations": [
+              {
+                "obsStartDate": "2026-08-07",
+                "organismObservations": [
+                  {
+                    "organismLabel": "33",
+                    "taxonDeterminations": [
+                      { "taxonName": "Tilia cordata" }
+                    ],
+                    "location": {
+                      "geometry": { "type": "Point", "coordinates": [8.39330699, 48.9305383] },
+                      "locationAccuracy": { "value": 5.888431549072266, "measurementScale": "ratio", "unit": "m" },
+                      "distanceFromOrigin": { "value": 22, "measurementScale": "ratio", "unit": "m" },
+                      "quarter": "3"
+                    },
+                    "stemDiameter": { "value": 256, "measurementScale": "ratio", "unit": "cm" },
+                    "diameterBaseDistance": { "value": 130, "measurementScale": "ratio", "unit": "cm" },
+                    "attributes": [
+                      { "attributeType": "girthAtBreastHeight", "value": 458, "measurementScale": "ratio", "unit": "cm", "method": "Girth measured at 130 cm above ground" }
+                    ]
+                  },
+                  {
+                    "organismLabel": "34",
+                    "taxonDeterminations": [
+                      { "taxonName": "Tilia cf. cordata" }
+                    ],
+                    "location": {
+                      "geometry": { "type": "Point", "coordinates": [8.39329623, 48.93053175] },
+                      "locationAccuracy": { "value": 3.9137487411499023, "measurementScale": "ratio", "unit": "m" },
+                      "distanceFromOrigin": { "value": 13, "measurementScale": "ratio", "unit": "m" },
+                      "quarter": "2"
+                    },
+                    "stemDiameter": { "value": 15, "measurementScale": "ratio", "unit": "cm" },
+                    "diameterBaseDistance": { "value": 130, "measurementScale": "ratio", "unit": "cm" },
+                    "attributes": [
+                      { "attributeType": "girthAtBreastHeight", "value": 45, "measurementScale": "ratio", "unit": "cm", "method": "Girth measured at 130 cm above ground" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

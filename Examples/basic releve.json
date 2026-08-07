@@ -4,11 +4,11 @@
     "projects": [
       {
         "projectName": "basic releve",
-          "plotObservations": [
+          "plots": [
           {
-            "plot": {
-              "plotName": "1"
-            },
+            "plotName": "1",
+            "plotObservations": [
+              {
             "obsStartDate": "2026-08-06",
             "observers": [
               {
@@ -57,6 +57,8 @@
                   "unit": "%",
                   "method": "Visual estimate"
                 }
+              }
+            ]
               }
             ]
           }

@@ -1,0 +1,69 @@
+{
+  "vegxVersion": "3.0",
+  "dataset": {
+    "projects": [
+      {
+        "projectName": "permanent plot",
+        "plots": [
+          {
+            "plotName": "a",
+            "permanentPlot": true,
+            "plotObservations": [
+              {
+                "plotObservationID": { "value": "1" },
+                "obsStartDate": "2026-08-07",
+                "taxonObservations": [
+                  {
+                    "taxonDeterminations": [
+                      {
+                        "taxonName": "Quercus robur"
+                      }
+                    ],
+                    "coverValue": {
+                      "value": 10,
+                      "measurementScale": "ratio",
+                      "unit": "%",
+                      "method": "Visual estimate"
+                    }
+                  }
+                ]
+              },
+              {
+                "plotObservationID": { "value": "2" },
+                "obsStartDate": "2026-08-07",
+                "taxonObservations": [
+                  {
+                    "taxonDeterminations": [
+                      {
+                        "taxonName": "Quercus robur"
+                      }
+                    ],
+                    "coverValue": {
+                      "value": 18,
+                      "measurementScale": "ratio",
+                      "unit": "%",
+                      "method": "Visual estimate"
+                    }
+                  },
+                  {
+                    "taxonDeterminations": [
+                      {
+                        "taxonName": "Galeobdolon luteum"
+                      }
+                    ],
+                    "coverValue": {
+                      "value": 2,
+                      "measurementScale": "ratio",
+                      "unit": "%",
+                      "method": "Visual estimate"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

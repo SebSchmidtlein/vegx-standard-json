@@ -1,0 +1,87 @@
+Suggested Examples
+
+Absolute minimum
+
+One project
+One plot with a name
+Observation date
+No species or optional metadata
+Tests the root structure and required plot.plotName and obsStartDate.
+
+Basic relevé
+
+One plot
+Observation date
+One observer
+Two or three species
+Percentage cover values
+No strata
+Tests the most common taxonObservations workflow.
+
+Ordinal cover scale
+
+One plot
+Braun-Blanquet or another non-percentage scale
+Species using values such as +, 1, and 2a
+Tests string cover values, coverScale, and scale definitions.
+
+Stratified vegetation
+
+One plot
+Two strata, such as tree and herb layers
+Layer height and cover
+Two species occurring in both strata
+This is especially valuable: it tests whether one species becomes two taxonObservation records with different stratumID values.
+
+Location and site
+
+Coordinates and coordinate reference system
+Accuracy, elevation, area, shape, and dimensions
+Aspect, slope, soil type, soil depth, and habitat
+No more than one or two species
+Tests geometry, measurements, units, and siteObservations.
+
+
+Taxonomic concepts
+
+One plot
+Three species
+Two taxonomic concepts
+
+
+Permanent plots
+One plot, two plot observations
+
+
+Individual organisms
+
+One plot observation
+Two tagged trees
+Taxon, DBH, height, and relative position
+Use different coordinate styles if Vegapp supports them
+Tests organismObservations separately from aggregate taxon records.
+
+Metadata and provenance
+
+Project details
+Multiple observers
+License and attribution
+Literature source
+Notes and custom fields
+Tests dataset metadata, parties, citations, and extensions.
+
+Useful edge cases
+
+After those work, produce a few deliberately awkward records:
+
+Plot name containing accented characters
+Species name containing × or an author citation
+Zero cover versus missing cover
+Plot without coordinates
+Missing optional measurements
+Decimal values using the app’s expected decimal separator
+Same plot surveyed on two dates
+Same individual tree surveyed on two dates
+Use recognizable values such as plot PLOT-01, cover 23, height 4.5, and date 2026-08-06. Distinctive values make incorrect mappings immediately visible.
+
+Export each project to both XML and, later, JSON. Keep a short note describing what was entered in Vegapp; the trio of input description, XML output, and expected JSON will form a strong conformance test suite. Start with examples 1–4, since they exercise the core model with little data-entry work.

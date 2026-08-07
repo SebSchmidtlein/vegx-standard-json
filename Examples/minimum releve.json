@@ -4,12 +4,14 @@
     "projects": [
       {
         "projectName": "minimum releve",
-        "plotObservations": [
+        "plots": [
           {
-            "plot": {
-              "plotName": "no. 1"
-            },
-            "obsStartDate": "2026-08-06"
+            "plotName": "no. 1",
+            "plotObservations": [
+              {
+                "obsStartDate": "2026-08-06"
+              }
+            ]
           }
         ]
       }

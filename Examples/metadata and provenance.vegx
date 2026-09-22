@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='ISO-8859-1' standalone='yes' ?>
+<vegX xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dwg="http://rs.tdwg.org/dwc/geospatial/" xmlns:tcs="http://www.tdwg.org/schemas/tcs/1.01">
+  <parties>
+    <party id="owner_20">
+      <individualName>Max, Mustermann, IAVS</individualName>
+    </party>
+  </parties>
+  <literatureCitations>
+    <literatureCitation id="citation_48">
+      <citationString>data source string</citationString>
+    </literatureCitation>
+  </literatureCitations>
+  <methods>
+    <method id="customLayerSystem">
+      <name>metadata and provenance_Layers</name>
+      <description>No vertical differentiation</description>
+      <subject>Classification of vegetation layers (strata, tiers)</subject>
+    </method>
+  </methods>
+  <attributes />
+  <strata>
+    <stratum id="stratum_1">
+      <stratumName>na</stratumName>
+      <methodID>customLayerSystem</methodID>
+      <definition />
+      <order>1</order>
+      <lowerLimit>0</lowerLimit>
+    </stratum>
+  </strata>
+  <projects>
+    <project id="19">
+      <title>metadata and provenance</title>
+    </project>
+  </projects>
+  <plots>
+    <plot id="48">
+      <plotName>2</plotName>
+    </plot>
+  </plots>
+  <plotObservations>
+    <plotObservation id="plotObservation_48">
+      <plotID>48</plotID>
+      <obsStartDate>2026-08-07</obsStartDate>
+      <plotObservationUniqueIdentifier>2</plotObservationUniqueIdentifier>
+      <projectID>19</projectID>
+      <license>
+        <licenseName>CC BY-ND</licenseName>
+        <attribution>terms string</attribution>
+        <partyID>owner_20</partyID>
+      </license>
+      <referencePublication>
+        <citationID>citation_48</citationID>
+        <referenceTable>table source string</referenceTable>
+      </referencePublication>
+    </plotObservation>
+  </plotObservations>
+  <note>
+    <text>Data collection and export were done using Vegapp for Android.</text>
+    <date>2026-08-07</date>
+  </note>
+</vegX>

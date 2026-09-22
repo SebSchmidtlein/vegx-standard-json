@@ -1,8 +1,9 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://iavs.org/vegx/schema/3.0/vegx.schema.json",
-  "title": "VegX 3.0 – Vegetation Plot Exchange Standard",
-  "description": "JSON Schema for exchanging vegetation plot (relevé) data. A dataset contains one or more self-contained projects, each with its metadata, shared definitions, and plots. Each plot is the physical sampling location plus its full observation history: a list of plotObservations, one per visit, each with observer and method metadata, user-defined stratum definitions, taxon occurrences by stratum, site observations, community type assignments, and broader community-level observations. This schema replaces the VegX 2.x XSD format; it covers the same information model with document-centric design rather than normalised ID references.",
+  "$comment": "Author: IAVS Ecoinformatics Working Group. The original VegX 2.x XML Schema (Version 2.0.6, see vegx-standard/veg.xsd) was re-expressed as this document-centric VegX 3.0 JSON Schema. See CREDITS.md for references.",
+  "title": "VegX 3.0 – A Standard for the Exchange of Vegetation Sampling Records",
+  "description": "JSON Schema for exchanging vegetation sampling records, commonly collected in plots. A dataset contains one or more self-contained projects, each with its metadata, shared definitions, and plots. A plot is the physical sampling location — a bounded area, a line, or an unbounded point for plotless designs — plus its full observation history: a list of plotObservations, one per visit, each with observer and method metadata, user-defined stratum definitions, taxon occurrences by stratum, site observations, community type assignments, and broader community-level observations. This schema replaces the VegX 2.x XSD format; it covers the same information model with document-centric design rather than normalised ID references.",
   "type": "object",
   "required": ["vegxVersion", "dataset"],
   "additionalProperties": false,
@@ -34,7 +35,7 @@
           "minItems": 1,
           "items": { "$ref": "#/definitions/project" }
         },
-        "generatedBy": {
+        "generationHistory": {
           "type": "array",
           "description": "Ordered software operations that generated or transformed this dataset.",
           "minItems": 1,
@@ -83,7 +84,7 @@
 
         "license": {
           "$ref": "#/definitions/license",
-          "description": "License for this observation when different from the project-level license."
+          "description": "License and rights holder for this observation. Recorded per observation because compiled datasets commonly combine observations contributed by different original recorders under different terms."
         },
 
         "previousPlotObservationIDs": {
@@ -343,7 +344,7 @@
 
     "plot": {
       "type": "object",
-      "description": "The physical sampling location and its full observation history. Properties assumed constant across observation events (location, geometry, area) are set here; each visit is one entry in plotObservations.",
+      "description": "The physical sampling location and its full observation history: a point, line, polygon, or volume, which may be unbounded (no explicit sampled area), e.g. for plotless designs such as Point-Centred Quarter Method (PCQM) — use shape 'point' and omit area for these. Properties assumed constant across observation events (location, geometry, area) are set here; each visit is one entry in plotObservations.",
       "required": ["plotName", "plotObservations"],
       "additionalProperties": false,
       "properties": {
@@ -1902,7 +1903,6 @@
         },
         "startYear":  { "type": "integer" },
         "endYear":    { "type": "integer" },
-        "license": { "$ref": "#/definitions/license" },
         "methods": {
           "type": "array",
           "description": "Survey methods shared by observations in this project. Methods applying to only one observation may instead be embedded there.",

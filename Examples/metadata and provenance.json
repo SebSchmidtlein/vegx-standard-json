@@ -1,0 +1,29 @@
+{
+  "vegxVersion": "3.0",
+  "dataset": {
+    "projects": [
+      {
+        "projectName": "metadata and provenance",
+        "plots": [
+          {
+            "plotName": "2",
+            "plotObservations": [
+              {
+                "obsStartDate": "2026-08-07",
+                "license": {
+                  "licenseName": "CC BY-ND",
+                  "attribution": "terms string",
+                  "rightsHolder": { "name": "Max, Mustermann, IAVS" }
+                },
+                "referencePublication": {
+                  "citation": { "citationString": "data source string" },
+                  "table": "table source string"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

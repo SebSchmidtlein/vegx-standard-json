@@ -1,9 +1,9 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://iavs.org/vegx/schema/3.0/vegx.schema.json",
-  "$comment": "Author: IAVS Ecoinformatics Working Group. The original VegX 2.x XML Schema (Version 2.0.6, see vegx-standard/veg.xsd) was re-expressed as this document-centric VegX 3.0 JSON Schema. See CREDITS.md for references.",
+  "$comment": "Author: IAVS Ecoinformatics Working Group. The original VegX 2.x XML Schema (Version 2.0.6, see vegx-standard/veg.xsd) was re-expressed as this VegX 3.0 JSON Schema, which aims to reduce the complexity introduced by cross-referenced elements. See CREDITS.md for references.",
   "title": "VegX 3.0 – A Standard for the Exchange of Vegetation Sampling Records",
-  "description": "JSON Schema for exchanging vegetation sampling records, commonly collected in plots. A dataset contains one or more self-contained projects, each with its metadata, shared definitions, and plots. A plot is the physical sampling location — a bounded area, a line, or an unbounded point for plotless designs — plus its full observation history: a list of plotObservations, one per visit, each with observer and method metadata, user-defined stratum definitions, taxon occurrences by stratum, site observations, community type assignments, and broader community-level observations. This schema replaces the VegX 2.x XSD format; it covers the same information model with document-centric design rather than normalised ID references.",
+  "description": "JSON Schema for exchanging vegetation sampling records. A dataset contains one or more self-contained projects, each with its metadata and shared definitions, and may contain plots. Each entry in plots comprises the physical sampling location, a bounded area, a line, or an unbounded point for plotless designs, and its observation history: one or more plotObservations, one per visit. Each plotObservation has a start date and may include observer and method metadata, user-defined strata, taxon occurrences, site observations, community type assignments, and broader community-level observations. This schema replaces the VegX 2.x XSD format; it covers the same information model while aiming to reduce the complexity introduced by cross-referenced elements.",
   "type": "object",
   "required": ["vegxVersion", "dataset"],
   "additionalProperties": false,
@@ -344,7 +344,7 @@
 
     "plot": {
       "type": "object",
-      "description": "The physical sampling location and its full observation history: a point, line, polygon, or volume, which may be unbounded (no explicit sampled area), e.g. for plotless designs such as Point-Centred Quarter Method (PCQM) — use shape 'point' and omit area for these. Properties assumed constant across observation events (location, geometry, area) are set here; each visit is one entry in plotObservations.",
+      "description": "The physical sampling location and its full observation history: a point, line, polygon, or volume, which may be unbounded (no explicit sampled area), e.g. for plotless designs such as Point-Centred Quarter Method (PCQM); use shape 'point' and omit area for these. Properties assumed constant across observation events (location, geometry, area) are set here; each visit is one entry in plotObservations.",
       "required": ["plotName", "plotObservations"],
       "additionalProperties": false,
       "properties": {
@@ -357,7 +357,7 @@
 
         "plotID": {
           "$ref": "#/definitions/identifier",
-          "description": "Globally unique identifier for this plot, e.g. a UUID or LSID. Should remain stable across resurveys — plotObservations share the same plotID as a time series and are sorted by obsStartDate."
+          "description": "Globally unique identifier for this plot, e.g. a UUID or LSID. Should remain stable across resurveys; plotObservations share the same plotID as a time series and are sorted by obsStartDate."
         },
 
         "geometry": {
